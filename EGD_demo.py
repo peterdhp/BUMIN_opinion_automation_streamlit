@@ -16,8 +16,6 @@ from langchain_core.runnables import (
 
 from langsmith import traceable
 
-st.title('내시경 소견 자동 완성')
-
 openai_api_key = st.sidebar.text_input('OpenAI API Key', value = '',type='password')
 if openai_api_key =='bumin':
     openai_api_key = st.secrets['OPENAI_API_KEY']
@@ -80,29 +78,22 @@ Use Korean. Try choosing one of the templates and complete it using the given re
     return chain
     
 
-
-if "messages" not in st.session_state:
-    st.session_state["messages"] = [{"role": "assistant", "content": "Submit radiologic report to continue."}]
     
-    
-if "radiological_report" not in st.session_state:
-    st.session_state.radiological_report = ''
+if "result_report" not in st.session_state:
+    st.session_state.result_report = ''
 if "opinion" not in st.session_state:
     st.session_state.opinion = {}
     
     
-for message in st.session_state.messages:
-    with st.chat_message(message["role"]):
-        st.markdown(message["content"])
-    
+st.title('내시경 소견 자동 완성')
 
 
 
-    with st.form('my_form'):
-        text = st.text_area('Enter text:', placeholder='submit test results here', height=400)
-        submitted = st.form_submit_button('Submit')
-        if not openai_api_key.startswith('sk-'):
-            st.warning('Please enter your OpenAI API key!', icon='⚠')
-        if submitted and openai_api_key.startswith('sk-'):
-            chain = opinion_generator(model="gpt-4o")
-            st.info(st.write_stream(chain.invoke(text)), key="opinion")
+with st.form('my_form'):
+    result_report = st.text_area('Enter text:', placeholder='submit test results here', height=400)
+    submitted = st.form_submit_button('Submit')
+    if not openai_api_key.startswith('sk-'):
+        st.warning('Please enter your OpenAI API key!', icon='⚠')
+    if submitted and openai_api_key.startswith('sk-'):
+        chain = opinion_generator(model="gpt-4o")
+        st.info(st.write_stream(chain.invoke(result_report)), key="opinion")
