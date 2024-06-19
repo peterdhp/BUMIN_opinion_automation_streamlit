@@ -30,7 +30,7 @@ if openai_api_key =='bumin':
 
 
 @traceable
-def opinion_generator(test_results):
+def opinion_generator(model):
     prompt = ChatPromptTemplate.from_messages([
     ("system", """You are a doctor at a health screening center. Explain the EGD results to the patients. 
 Use Korean. Try choosing one of the templates and complete it using the given results: 
@@ -71,7 +71,7 @@ Use Korean. Try choosing one of the templates and complete it using the given re
 
 
 
-    llm = ChatOpenAI(model_name="gpt-4o", temperature = 0)  #gpt-4-turbo-preview #gpt-3.5-turbo #gpt-4 #gpt-3.5-turbo-1106
+    llm = ChatOpenAI(model_name=model, temperature = 0)  #gpt-4-turbo-preview #gpt-3.5-turbo #gpt-4 #gpt-3.5-turbo-1106
     output_parser = StrOutputParser()
 
     chain = prompt | llm | output_parser
@@ -104,4 +104,5 @@ for message in st.session_state.messages:
         if not openai_api_key.startswith('sk-'):
             st.warning('Please enter your OpenAI API key!', icon='⚠')
         if submitted and openai_api_key.startswith('sk-'):
-            opinion_generator(text)
+            chain = opinion_generator(model="gpt-4o")
+            st.info(st.write_stream(chain.invoke(text)), key="opinion")
