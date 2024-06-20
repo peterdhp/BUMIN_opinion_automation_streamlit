@@ -96,4 +96,4 @@ with st.form('my_form'):
         st.warning('Please enter your OpenAI API key!', icon='⚠')
     if submitted and openai_api_key.startswith('sk-'):
         chain = opinion_generator(model="gpt-4o")
-        st.info(st.write_stream(chain.stream(result_report)), key="opinion")
+        st.session_state.opinion = st.info(st.write_stream(chain.stream(result_report)))
