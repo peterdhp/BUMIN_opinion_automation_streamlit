@@ -81,8 +81,8 @@ Use Korean. Choose one of the templates and complete it using the given results:
 
     chain = prompt | llm | output_parser
 
-        
-    return chain
+    opinion = chain.invoke(result_report)        
+    return opinion
     
 
     
@@ -102,5 +102,5 @@ with st.form('my_form'):
     if not openai_api_key.startswith('sk-'):
         st.warning('Please enter your OpenAI API key!', icon='⚠')
     if submitted and openai_api_key.startswith('sk-'):
-        chain = opinion_generator(model="gpt-4o")
-        st.session_state.opinion = st.info(chain.invoke(result_report))
+        opinion = opinion_generator(model="gpt-4o")
+        st.session_state.opinion = st.info(opinion)
