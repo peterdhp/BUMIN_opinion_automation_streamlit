@@ -16,10 +16,10 @@ from langchain_core.runnables import (
 
 from langsmith import traceable
 
-LANGCHAIN_API_KEY=st.secrets('LANGCHAIN_API_KEY')
-LANGCHAIN_TRACING_V2=st.secrets('LANGCHAIN_TRACING_V2')
-LANGCHAIN_ENDPOINT=st.secrets('LANGCHAIN_ENDPOINT')
-LANGCHAIN_PROJECT=st.secrets('LANGCHAIN_PROJECT')
+LANGCHAIN_API_KEY=st.secrets['LANGCHAIN_API_KEY']
+LANGCHAIN_TRACING_V2=st.secrets['LANGCHAIN_TRACING_V2']
+LANGCHAIN_ENDPOINT=st.secrets['LANGCHAIN_ENDPOINT']
+LANGCHAIN_PROJECT=st.secrets['LANGCHAIN_PROJECT']
 
 openai_api_key = st.sidebar.text_input('OpenAI API Key', value = '',type='password')
 if openai_api_key =='bumin':
