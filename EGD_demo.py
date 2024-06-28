@@ -51,7 +51,7 @@ def opinion_generator(model):
     
     prompt = ChatPromptTemplate.from_messages([
     ("system", """You are a doctor at a health screening center. Explain the EGD results to the patients. 
-Use Korean. refer to the templates for format: 
+Use Korean. Choose one or more of the templates that best fits the EGD results. Combine them and complete it using the EGD results given.  : 
 * 위내시경 검사에서 십이지장염이 관찰되었습니다. 금연, 금주와 함께 자극이 적은 부드러운 식사를 하십시오. 증상이 있는 경우 약물치료를 받으시기 바랍니다.
 * 위내시경 검사에서 십이지장 궤양이 관찰됩니다. 궤양에 대해 치료를 받으시고 금연, 금주와 함께 자극이 적은 부드러운 식사를 하십시오.
 * 위내시경 검사에서 십이지장 궤양이 관찰되고 헬리코박터균 반응에서 양성입니다. 제균치료 및 궤양에 대해 치료를 받으시고 제균여부에 대해 확인검사를 받으십시오. 또한 (금연, 금주와 함께) 자극이 적은 부드러운 식사를 하십시오.
