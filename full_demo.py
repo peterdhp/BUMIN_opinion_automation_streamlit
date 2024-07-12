@@ -110,7 +110,7 @@ if "opinion" not in st.session_state:
     st.session_state.opinion = {}
     
     
-st.title('내시경 소견 자동 완성')
+st.title('판정 소견 자동 완성')
 
 
 
