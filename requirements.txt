@@ -4,3 +4,4 @@ langchain
 langsmith
 langchain_community
 cohere  
+faiss-cpu
