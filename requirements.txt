@@ -5,3 +5,4 @@ langsmith
 langchain_community
 cohere  
 faiss-cpu
+streamlit_feedback
