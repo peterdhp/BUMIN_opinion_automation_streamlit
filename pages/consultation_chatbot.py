@@ -39,12 +39,16 @@ if "messages" not in st.session_state:
 def chat_engine(msg_log):
     """채팅 내용을 기반으로 질문을 함"""
 
-    system_prompt = [("system", """You are a Korean doctor. you are going to answer questions from a patient. Answer the question based on the examination results provided. :
-    
-    [examination results]
-    {result_report}
-    
-    """)]
+    system_prompt = [("system", """You are a Korean doctor. you are going to answer questions from a patient. Answer the question based on the examination results and patient information provided. :
+
+[patient information]
+나이 : 65세
+성별 : 남자
+가족력 : 위암
+흡연 : 30갑년
+
+[examination results]
+{result_report}""")]
     
     prompt_temp = system_prompt + msg_log
     
