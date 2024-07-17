@@ -72,7 +72,6 @@ def compress_retrieve(test_results):
     
     return docs
 
-@traceable
 def opinion_generator(model):
     
     opinion_prompt = ChatPromptTemplate.from_messages([
