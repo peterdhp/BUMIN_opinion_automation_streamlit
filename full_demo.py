@@ -79,11 +79,11 @@ def compress_retrieve(test_results):
 def opinion_generator(model):
     
     opinion_prompt = ChatPromptTemplate.from_messages([
-    ("system", """You are a doctor at a health screening center. Explain the EGD results to the patients. 
-Use Korean. Choose one of the templates and complete it using the given results: 
+    ("system", """You are a doctor at a health screening center. Explain the test results to the patients. 
+Use Korean. Choose one of the templates and complete it using the given results. Only use the information given in the test results. NEVER make up new information.  : 
 {template}"""),
     ("user", """
-<EGD results>
+<test results>
 {test_results}""")
     
 ])
