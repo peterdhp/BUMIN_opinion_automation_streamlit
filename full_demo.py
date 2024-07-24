@@ -108,7 +108,8 @@ with st.form('my_form'):
         opinion = response['opinion']
         doc_list = '\n\n'.join([f"{entry.metadata['test']}  :  {entry.metadata['korean']}" for i, entry in enumerate(response['docs'])])
         st.session_state.opinion = opinion  # Store the opinion in the session state
-st.info(st.session_state.opinion)
+if not st.session_state.opinion == '' :
+    st.info(st.session_state.opinion)
 
 if st.session_state.get("run_id"):
     run_id = st.session_state.run_id# Debug print for Run ID
@@ -149,5 +150,5 @@ if st.session_state.get("run_id"):
         else:
             st.warning("Invalid feedback score.")
         
-
-st.info(st.session_state.doc_list)
+if not st.session_state.doc_list == '':
+    st.info(st.session_state.doc_list)
