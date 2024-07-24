@@ -81,7 +81,7 @@ def opinion_generator(model):
     opinion_prompt = ChatPromptTemplate.from_messages([
     ("system", """You are a doctor at a health screening center. Explain the test results to the patients. 
 Use Korean. Choose one of the templates and complete it using the given results. Only use the information given in the test results. NEVER make up new information.  
-Only output the final result. However, when additional information like biopsy results are needed to complete the response, please add a message requesting more information: 
+Only output the final result. However, when a biopsy was performed but doesn't have any ㅔathology diagnosis, please add a message requesting more information: 
 {template}"""),
     ("user", """
 <test results>
