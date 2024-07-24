@@ -88,7 +88,9 @@ Only output the result. However, when a biopsy was performed but doesn't have an
 if "result_report" not in st.session_state:
     st.session_state.result_report = ''
 if "opinion" not in st.session_state:
-    st.session_state.opinion = {}
+    st.session_state.opinion = ''
+if "doc_list" not in st.session_state:
+    st.session_state.doc_list = ''
 
 st.title('판정 소견 자동 완성')
 feedback_option = "thumbs"
@@ -106,7 +108,7 @@ with st.form('my_form'):
         opinion = response['opinion']
         doc_list = '\n\n'.join([f"{entry.metadata['test']}  :  {entry.metadata['korean']}" for i, entry in enumerate(response['docs'])])
         st.session_state.opinion = opinion  # Store the opinion in the session state
-st.info(opinion)
+st.info(st.session_state.opinion)
 
 if st.session_state.get("run_id"):
     run_id = st.session_state.run_id# Debug print for Run ID
@@ -148,4 +150,4 @@ if st.session_state.get("run_id"):
             st.warning("Invalid feedback score.")
         
 
-st.info(doc_list)
+st.info(st.session_state.doc_list)
