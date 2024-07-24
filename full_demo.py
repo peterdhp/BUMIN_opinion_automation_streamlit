@@ -107,7 +107,6 @@ with st.form('my_form'):
         doc_list = '\n\n'.join([f"{entry.metadata['test']}  :  {entry.metadata['korean']}" for i, entry in enumerate(response['docs'])])
         st.session_state.opinion = opinion  # Store the opinion in the session state
 st.info(opinion)
-st.info(doc_list)
 
 if st.session_state.get("run_id"):
     run_id = st.session_state.run_id# Debug print for Run ID
@@ -116,7 +115,6 @@ if st.session_state.get("run_id"):
         optional_text_label="[Optional] Please provide an explanation",
         key=f"feedback_{run_id}",
     )
-    st.write(f"Debug: Feedback = {feedback}")  # Debug print for feedback
 
     # Define score mappings for both "thumbs" and "faces" feedback systems
     score_mappings = {
@@ -148,5 +146,6 @@ if st.session_state.get("run_id"):
             }
         else:
             st.warning("Invalid feedback score.")
-    else:
-        st.warning("No feedback received.")
+        
+
+st.info(doc_list)
