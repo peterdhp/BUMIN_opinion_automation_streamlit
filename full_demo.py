@@ -106,12 +106,11 @@ with st.form('my_form'):
         opinion = response['opinion']
         doc_list = '\n\n'.join([f"{entry.metadata['test']}  :  {entry.metadata['korean']}" for i, entry in enumerate(response['docs'])])
         st.session_state.opinion = opinion  # Store the opinion in the session state
-        st.info(opinion)
-        st.info(doc_list)
+st.info(opinion)
+st.info(doc_list)
 
 if st.session_state.get("run_id"):
-    run_id = st.session_state.run_id
-    st.write(f"Debug: Run ID = {run_id}")  # Debug print for Run ID
+    run_id = st.session_state.run_id# Debug print for Run ID
     feedback = streamlit_feedback(
         feedback_type=feedback_option,
         optional_text_label="[Optional] Please provide an explanation",
@@ -131,7 +130,6 @@ if st.session_state.get("run_id"):
     if feedback:
         # Get the score from the selected feedback option's score mapping
         score = scores.get(feedback["score"])
-        st.write(f"Debug: Score = {score}")  # Debug print for score
 
         if score is not None:
             # Formulate feedback type string incorporating the feedback option and score value
@@ -144,7 +142,6 @@ if st.session_state.get("run_id"):
                 score=score,
                 comment=feedback.get("text"),
             )
-            st.write(f"Debug: Feedback Record = {feedback_record}")  # Debug print for feedback record
             st.session_state.feedback = {
                 "feedback_id": str(feedback_record.id),
                 "score": score,
