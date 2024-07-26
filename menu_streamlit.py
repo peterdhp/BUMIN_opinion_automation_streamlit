@@ -28,7 +28,7 @@ def menu():
     # Determine if a user is logged in or not, then show the correct
     # navigation menu
     with st.sidebar:
-        if "openai_api_key_psscode" not in st.session_state or st.session_state.openai_api_key_psscode == '':
+        if "openai_api_key" not in st.session_state or st.session_state.openai_api_key == '':
             unauthenticated_menu()
             return
     authenticated_menu()
@@ -38,6 +38,6 @@ def menu_with_redirect():
     # Redirect users to the main page if not logged in, otherwise continue to
     # render the navigation menu
     
-    if "openai_api_key_psscode" not in st.session_state or st.session_state.openai_api_key_psscode == '':
+    if "openai_api_key" not in st.session_state or st.session_state.openai_api_key == '':
         st.switch_page("app_streamlit.py")
     menu()
