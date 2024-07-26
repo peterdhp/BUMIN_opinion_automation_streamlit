@@ -1,6 +1,5 @@
 import streamlit as st
 from menu_streamlit import menu
-from utils_streamlit import *
 import os
 
 from menu_streamlit import menu
