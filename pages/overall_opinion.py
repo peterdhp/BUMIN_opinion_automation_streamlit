@@ -51,8 +51,8 @@ def refine_overall_opinion(model):
 
 if "result" not in st.session_state:
     st.session_state.result = ''
-if "opinion" not in st.session_state:
-    st.session_state.opinion = ''
+if "overall_opinion" not in st.session_state:
+    st.session_state.overall_opinion = ''
 
 st.title('종합 소견 자동 완성')
 feedback_option = "thumbs"
