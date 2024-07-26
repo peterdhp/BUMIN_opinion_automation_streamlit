@@ -12,8 +12,8 @@ def authenticated_menu():
     
     st.sidebar.page_link("app_streamlit.py", label="API key 재등록하기")
             
-    st.sidebar.page_link("pages/patient_info.py", label="환자정보 등록")
-    st.sidebar.page_link("pages/chat_assistant.py", label="CHAT ASSISTANT")
+    st.sidebar.page_link("pages/result_opinion.py", label="검사 소견 자동 작성")
+    st.sidebar.page_link("pages/overall_opinion.py", label="종합 소견 자동 작성")
             
     if 'patient_info' in st.session_state:
         st.sidebar.write(st.session_state.patient_info)
