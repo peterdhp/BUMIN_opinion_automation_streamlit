@@ -36,7 +36,7 @@ client = Client()
 
 def refine_overall_opinion(model):
     refine_prompt = ChatPromptTemplate.from_messages([
-        ("system", """검진 결과를 보고종합적으로 생활 습관을 어떻게 조정해야하는지, 어떠한 부분은 좋지 않아 진료가 필요한지, 혹시 아주 위중해서 당장 상급 병원 진료가 필요한 경누는 없는지 나눠서 설명해줘. don't use markdown, only plain text"""),
+        ("system", """검진 결과를 보고종합적으로 생활 습관을 어떻게 조정해야하는지, 어떠한 부분은 좋지 않아 진료가 필요한지, 혹시 아주 위중해서 당장 상급 병원 진료가 필요한 경누는 없는지 나눠서 설명해줘. Don't use markdown, only plain text."""),
         ("user", """
 [검진 결과]
 {results}""")
@@ -70,6 +70,13 @@ with st.form('my_form'):
             st.session_state.run_id = cb.traced_runs[0].id
         refined_opinion = response
         st.session_state.overall_opinion = refined_opinion 
+        st.session_state.overall_opinion = st.session_state.overall_opinion + """\n\n ▶ 상기 종합소견은 검사 결과들에 대한 요약 설명입니다. 별도의 설명이 없는 검사들은 결과가 정상이거나 또는 참고치 범위를 약간 벗어나있는 경우이며, 이는 해당 결과값 단독으로는 임상적 의미가 없는 경우입니다. 검사 결과 확인 시 이점을 참고하시기 바랍니다.
+
+▶ 질병의 조기발견 및 예방을 위하여 정기적인 검진을 권유 드립니다.
+
+▶ 결과에 대하여 직접 상담을 원하시는 경우에는 상담 일정 예약 후 센터로 내원하시기 바랍니다.
+
+▶ 결과 관련 문의 사항 : 02) 2620 - 0025"""
 if not st.session_state.overall_opinion == '' :
     st.text_area('',value = st.session_state.overall_opinion,height=600)
 
