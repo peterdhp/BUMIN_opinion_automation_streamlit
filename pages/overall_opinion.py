@@ -68,7 +68,6 @@ with st.form('my_form'):
             response = refine_chain.invoke(result)
             st.session_state.run_id = cb.traced_runs[0].id
         refined_opinion = response
-        doc_list = '\n\n'.join([f"{entry.metadata['test']}  :  {entry.metadata['korean']}" for i, entry in enumerate(response['docs'])])
         st.session_state.opinion = refined_opinion 
 if not st.session_state.opinion == '' :
     st.info(st.session_state.opinion)
