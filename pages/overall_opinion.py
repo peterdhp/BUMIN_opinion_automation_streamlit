@@ -70,7 +70,7 @@ with st.form('my_form'):
         refined_opinion = response
         st.session_state.overall_opinion = refined_opinion 
 if not st.session_state.overall_opinion == '' :
-    st.info(st.session_state.overall_opinion)
+    st.write(st.session_state.overall_opinion)
 
 if st.session_state.get("run_id"):
     run_id = st.session_state.run_id# Debug print for Run ID
