@@ -31,7 +31,7 @@ if not st.session_state.openai_api_key.startswith('sk-'):
     st.warning('OpenAI API key를 입력해주세요!', icon='⚠')
     
 if st.session_state.openai_api_key.startswith('sk-'):
-    st.switch_page('pages/result_opinon.py')
+    st.switch_page('pages/result_opinion.py')
     
     
 
