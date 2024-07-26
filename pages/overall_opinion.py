@@ -71,7 +71,7 @@ with st.form('my_form'):
         refined_opinion = response
         st.session_state.overall_opinion = refined_opinion 
 if not st.session_state.overall_opinion == '' :
-    st.text_area('',value = st.session_state.overall_opinion,disabled=True)
+    st.text_area('',value = st.session_state.overall_opinion,height=600)
 
 if st.session_state.get("run_id"):
     run_id = st.session_state.run_id# Debug print for Run ID
