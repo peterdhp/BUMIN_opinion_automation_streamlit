@@ -30,6 +30,7 @@ os.environ["LANGCHAIN_ENDPOINT"] = st.secrets['LANGCHAIN_ENDPOINT']
 os.environ['LANGCHAIN_PROJECT'] = st.secrets['LANGCHAIN_PROJECT']
 
 
+menu_with_redirect()
 
 client = Client()
 
@@ -111,5 +112,4 @@ if st.session_state.get("run_id"):
         else:
             st.warning("Invalid feedback score.")
             
-menu_with_redirect()
         
