@@ -92,7 +92,7 @@ if "opinion" not in st.session_state:
 if "doc_list" not in st.session_state:
     st.session_state.doc_list = ''
 
-st.title('판정 소견 자동 완성')
+st.title('검사 소견 자동 완성')
 feedback_option = "thumbs"
 
 with st.form('my_form'):
