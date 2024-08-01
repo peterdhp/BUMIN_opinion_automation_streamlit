@@ -36,7 +36,7 @@ client = Client()
 
 def refine_overall_opinion(model):
     refine_prompt = ChatPromptTemplate.from_messages([
-        ("system", """검진 결과를 보고 종합적으로 생활 습관을 어떻게 조정해야하는지, 어떠한 부분은 좋지 않아 진료가 필요한지, 혹시 아주 위중해서 당장 상급 병원 진료가 필요한 경우는 없는지 나눠서 설명해줘. 검진 결과의 내용을 빠짐 없이 포함해주고, 내용을 지어내지 않도록 유의해줘. Don't use markdown, only plain text."""),
+        ("system", """검진 결과를 보고 종합적으로 생활 습관을 어떻게 조정해야하는지, 어떠한 부분은 좋지 않아 진료가 필요한지, 혹시 아주 위중해서 당장 상급 병원 진료가 필요한 경우는 없는지 나눠서 설명해줘. 정상인 결과들에 대해서도 요약해서 빠짐 없이 설명해주고, 내용을 지어내지 않도록 유의해줘. Don't use markdown, only plain text."""),
         ("user", """
 [검진 결과]
 {results}""")
