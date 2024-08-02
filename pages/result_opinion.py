@@ -99,7 +99,7 @@ feedback_option = "thumbs"
 col1, col2 = st.columns(2)
 with col1 :
     with st.form('my_form'):
-        result_report = st.text_area('Enter text:', placeholder='submit test results here', height=400, use_container_width=True)
+        result_report = st.text_area('Enter text:', placeholder='submit test results here', height=400)
         submitted = st.form_submit_button('Submit')
         if not st.session_state.openai_api_key.startswith('sk-'):
             st.warning('Please enter your OpenAI API key!', icon='⚠')
