@@ -96,62 +96,66 @@ if "doc_list" not in st.session_state:
 st.title('검사 소견 자동 완성')
 feedback_option = "thumbs"
 
-with st.form('my_form'):
-    result_report = st.text_area('Enter text:', placeholder='submit test results here', height=400)
-    submitted = st.form_submit_button('Submit')
-    if not st.session_state.openai_api_key.startswith('sk-'):
-        st.warning('Please enter your OpenAI API key!', icon='⚠')
-    if submitted and st.session_state.openai_api_key.startswith('sk-'):
-        chain = opinion_generator(model="gpt-4o")
-        with collect_runs() as cb:
-            response = chain.invoke(result_report)
-            st.session_state.run_id = cb.traced_runs[0].id
-        opinion = response['opinion']
-        doc_list = '\n\n'.join([f"{entry.metadata['test']}  :  {entry.metadata['korean']}" for i, entry in enumerate(response['docs'])])
-        st.session_state.opinion = opinion 
-        st.session_state.doc_list = doc_list # Store the opinion in the session state
-if not st.session_state.opinion == '' :
-    st.info(st.session_state.opinion)
+col1, col2 = st.columns(2)
+with col1 :
+    with st.form('my_form'):
+        result_report = st.text_area('Enter text:', placeholder='submit test results here', height=400)
+        submitted = st.form_submit_button('Submit')
+        if not st.session_state.openai_api_key.startswith('sk-'):
+            st.warning('Please enter your OpenAI API key!', icon='⚠')
+        if submitted and st.session_state.openai_api_key.startswith('sk-'):
+            chain = opinion_generator(model="gpt-4o")
+            with collect_runs() as cb:
+                response = chain.invoke(result_report)
+                st.session_state.run_id = cb.traced_runs[0].id
+            opinion = response['opinion']
+            doc_list = '\n\n'.join([f"{entry.metadata['test']}  :  {entry.metadata['korean']}" for i, entry in enumerate(response['docs'])])
+            st.session_state.opinion = opinion 
+            st.session_state.doc_list = doc_list # Store the opinion in the session state
+            
+with col2 :
+    if not st.session_state.opinion == '' :
+        st.info(st.session_state.opinion)
 
-if st.session_state.get("run_id"):
-    run_id = st.session_state.run_id# Debug print for Run ID
-    feedback = streamlit_feedback(
-        feedback_type=feedback_option,
-        optional_text_label="코멘트를 입력해주세요.",
-        key=f"feedback_{run_id}",
-    )
+    if st.session_state.get("run_id"):
+        run_id = st.session_state.run_id# Debug print for Run ID
+        feedback = streamlit_feedback(
+            feedback_type=feedback_option,
+            optional_text_label="코멘트를 입력해주세요.",
+            key=f"feedback_{run_id}",
+        )
 
-    # Define score mappings for both "thumbs" and "faces" feedback systems
-    score_mappings = {
-        "thumbs": {"👍": 1, "👎": 0},
-        "faces": {"😀": 1, "🙂": 0.75, "😐": 0.5, "🙁": 0.25, "😞": 0},
-    }
+        # Define score mappings for both "thumbs" and "faces" feedback systems
+        score_mappings = {
+            "thumbs": {"👍": 1, "👎": 0},
+            "faces": {"😀": 1, "🙂": 0.75, "😐": 0.5, "🙁": 0.25, "😞": 0},
+        }
 
-    # Get the score mapping based on the selected feedback option
-    scores = score_mappings[feedback_option]
+        # Get the score mapping based on the selected feedback option
+        scores = score_mappings[feedback_option]
 
-    if feedback:
-        # Get the score from the selected feedback option's score mapping
-        score = scores.get(feedback["score"])
+        if feedback:
+            # Get the score from the selected feedback option's score mapping
+            score = scores.get(feedback["score"])
 
-        if score is not None:
-            # Formulate feedback type string incorporating the feedback option and score value
-            feedback_type_str = f"{feedback_option} {feedback['score']}"
+            if score is not None:
+                # Formulate feedback type string incorporating the feedback option and score value
+                feedback_type_str = f"{feedback_option} {feedback['score']}"
 
-            # Record the feedback with the formulated feedback type string and optional comment
-            feedback_record = client.create_feedback(
-                run_id,
-                feedback_type_str,
-                score=score,
-                comment=feedback.get("text"),
-            )
-            st.session_state.feedback = {
-                "feedback_id": str(feedback_record.id),
-                "score": score,
-            }
-        else:
-            st.warning("Invalid feedback score.")
+                # Record the feedback with the formulated feedback type string and optional comment
+                feedback_record = client.create_feedback(
+                    run_id,
+                    feedback_type_str,
+                    score=score,
+                    comment=feedback.get("text"),
+                )
+                st.session_state.feedback = {
+                    "feedback_id": str(feedback_record.id),
+                    "score": score,
+                }
+            else:
+                st.warning("Invalid feedback score.")
+            
+    if not st.session_state.doc_list == '':
+        st.info(st.session_state.doc_list)
         
-if not st.session_state.doc_list == '':
-    st.info(st.session_state.doc_list)
-    
