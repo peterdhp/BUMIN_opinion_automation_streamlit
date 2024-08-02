@@ -6,6 +6,9 @@ from menu_streamlit import menu
 
 from langsmith import traceable
 
+
+st.set_page_config(layout="wide")
+
 if "openai_api_key_psscode" not in st.session_state:
     st.session_state.openai_api_key_psscode = ''
 
