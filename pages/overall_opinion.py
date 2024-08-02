@@ -60,8 +60,8 @@ feedback_option = "thumbs"
 
 col1, col2 = st.columns(2)
 with col1:
-    with st.form('my_form'):
-        result = st.text_area('Enter text:', placeholder='종합 소견을 입력해주세요', height=400)
+    with st.form('my_form', use_container_width=True):
+        result = st.text_area('Enter text:', placeholder='종합 소견을 입력해주세요', height=400, use_container_width=True)
         submitted = st.form_submit_button('Submit')
         if not st.session_state.openai_api_key.startswith('sk-'):
             st.warning('Please enter your OpenAI API key!', icon='⚠')
@@ -81,7 +81,7 @@ with col1:
     ▶ 결과 관련 문의 사항 : 02) 2620 - 0025"""
 with col2:
     if not st.session_state.overall_opinion == '' :
-        st.text_area('',value = st.session_state.overall_opinion,height=600)
+        st.text_area('',value = st.session_state.overall_opinion,height=600, use_container_width=True)
 
     if st.session_state.get("run_id"):
         run_id = st.session_state.run_id# Debug print for Run ID

@@ -98,8 +98,8 @@ feedback_option = "thumbs"
 
 col1, col2 = st.columns(2)
 with col1 :
-    with st.form('my_form'):
-        result_report = st.text_area('Enter text:', placeholder='submit test results here', height=400)
+    with st.form('my_form', use_container_width=True):
+        result_report = st.text_area('Enter text:', placeholder='submit test results here', height=400, use_container_width=True)
         submitted = st.form_submit_button('Submit')
         if not st.session_state.openai_api_key.startswith('sk-'):
             st.warning('Please enter your OpenAI API key!', icon='⚠')
@@ -115,7 +115,7 @@ with col1 :
             
 with col2 :
     if not st.session_state.opinion == '' :
-        st.info(st.session_state.opinion)
+        st.info(st.session_state.opinion, use_container_width=True)
 
     if st.session_state.get("run_id"):
         run_id = st.session_state.run_id# Debug print for Run ID
@@ -157,5 +157,5 @@ with col2 :
                 st.warning("Invalid feedback score.")
             
     if not st.session_state.doc_list == '':
-        st.info(st.session_state.doc_list)
+        st.info(st.session_state.doc_list, use_container_width=True)
         
