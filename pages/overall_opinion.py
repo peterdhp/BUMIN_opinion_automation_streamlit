@@ -80,7 +80,7 @@ with col1:
     ▶ 결과 관련 문의 사항 : 02) 2620 - 0025"""
 with col2:
     if not st.session_state.overall_opinion == '' :
-        st.text_area('',value = st.session_state.overall_opinion,height=600, use_container_width=True)
+        st.text_area('',value = st.session_state.overall_opinion,height=600)
 
     if st.session_state.get("run_id"):
         run_id = st.session_state.run_id# Debug print for Run ID
