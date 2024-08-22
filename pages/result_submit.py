@@ -2,6 +2,7 @@ import streamlit as st
 import pdfplumber
 import pandas as pd
 import re
+from menu_streamlit import menu_with_redirect
 
 if 'result_report' not in st.session_state:
     st.session_state.result_report = ''
@@ -9,7 +10,7 @@ if 'result_report' not in st.session_state:
 st.title("검진 결과 업로드하기")
 file = st.file_uploader("검진 결과 기록지를 업로드해주세요.", type=["pdf"])
 
-
+menu_with_redirect()
 
 def clean_extracted_text(extracted_text):
     # Remove excessive whitespace

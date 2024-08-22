@@ -16,6 +16,9 @@ from langchain_core.runnables import (
 import os
 
 from langsmith import traceable
+from menu_streamlit import menu_with_redirect
+
+menu_with_redirect()
 
 
 os.environ["LANGCHAIN_API_KEY"]=st.secrets['LANGCHAIN_API_KEY']
