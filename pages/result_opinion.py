@@ -19,7 +19,7 @@ from langchain_core.runnables import (
 from menu_streamlit import menu_with_redirect
 from operator import itemgetter
 import os
-from langchain.vectorstores import FAISS
+from langchain_community.vectorstores import FAISS
 import cohere
 from langsmith import traceable
 from langsmith import Client

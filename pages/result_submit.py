@@ -43,6 +43,8 @@ def extract_text_and_tables(pdf_path):
     return full_transcript
 
 # Usage
-with st.spinner("검진 결과를 읽고 있습니다."):
-    st.session_state.result_report = extract_text_and_tables(file)
-    st.switch_page("pages/consultation_chatbot.py")
+
+if file :
+    with st.spinner("검진 결과를 읽고 있습니다."):
+        st.session_state.result_report = extract_text_and_tables(file)
+        st.switch_page("pages/consultation_chatbot.py")
