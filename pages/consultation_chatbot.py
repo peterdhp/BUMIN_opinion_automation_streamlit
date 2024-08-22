@@ -29,8 +29,8 @@ openai_api_key = st.secrets['OPENAI_API_KEY']
 if "messages" not in st.session_state:
     st.session_state.messages = []
     
-if "result_report" not in st.session_state:
-    st.switch_page("result_consultation.py")
+if "result_report" not in st.session_state :
+    st.switch_page("result_submit.py")
 
 #openai_api_key = os.environ.get('OPENAI_API_KEY')
 
@@ -40,15 +40,7 @@ if "result_report" not in st.session_state:
 
 
 def chat_engine(msg_log):
-    """채팅 내용을 기반으로 질문을 함"""
-
-    system_prompt = [("system", """You are a Korean doctor. you are going to answer questions from a patient. Answer the question based on the examination results and patient information provided. :
-
-[patient information]
-나이 : 65세
-성별 : 남자
-가족력 : 위암
-흡연 : 30갑년
+    system_prompt = [("system", """You are a Korean doctor. you are going to answer questions from a patient. Answer the question based on the examination results provided. :
 
 [examination results]
 {result_report}""")]
