@@ -33,7 +33,7 @@ if "messages" not in st.session_state:
     st.session_state.messages = []
     
 if "result_report" not in st.session_state :
-    st.switch_page("result_submit.py")
+    st.switch_page("pages/result_submit.py")
 
 #openai_api_key = os.environ.get('OPENAI_API_KEY')
 
