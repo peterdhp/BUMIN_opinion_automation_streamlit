@@ -18,9 +18,9 @@ def authenticated_menu():
             
     if 'patient_info' in st.session_state:
         st.sidebar.write(st.session_state.patient_info)
-    if "result_report" not in st.session_state:
+    if "result_finalreport" not in st.session_state:
         st.sidebar.page_link("pages/result_submit.py", label="검진 결과 상담하기")
-    if "result_report" in st.session_state:
+    if "result_finalreport" in st.session_state:
         st.sidebar.page_link("pages/consultation_chatbot.py", label="검진 결과 상담하기")    
     #st.sidebar.write(st.session_state)
 

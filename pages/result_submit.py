@@ -4,8 +4,8 @@ import pandas as pd
 import re
 from menu_streamlit import menu_with_redirect
 
-if 'result_report' not in st.session_state:
-    st.session_state.result_report = ''
+if 'result_finalreport' not in st.session_state:
+    st.session_state.result_finalreport = ''
 
 st.title("검진 결과 업로드하기")
 file = st.file_uploader("검진 결과 기록지를 업로드해주세요.", type=["pdf"])
@@ -46,5 +46,5 @@ def extract_text_and_tables(pdf_path):
 
 if file :
     with st.spinner("검진 결과를 읽고 있습니다."):
-        st.session_state.result_report = extract_text_and_tables(file)
+        st.session_state.result_finalreport = extract_text_and_tables(file)
         st.switch_page("pages/consultation_chatbot.py")
