@@ -7,3 +7,4 @@ cohere
 faiss-cpu
 streamlit_feedback
 pdfplumber
+tabulate
