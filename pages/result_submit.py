@@ -4,8 +4,8 @@ import pandas as pd
 import re
 from menu_streamlit import menu_with_redirect
 
-if 'result_finalreport' not in st.session_state:
-    st.session_state.result_finalreport = ''
+#if 'result_finalreport' not in st.session_state:
+#    st.session_state.result_finalreport = ''
 
 st.title("검진 결과 업로드하기")
 file = st.file_uploader("검진 결과 기록지를 업로드해주세요.", type=["pdf"])
