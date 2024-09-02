@@ -36,7 +36,7 @@ client = Client()
 
 def refine_overall_opinion(model):
     refine_prompt = ChatPromptTemplate.from_messages([
-        ("system", """검진 결과를 보고 종합적으로 생활 습관을 어떻게 조정해야하는지, 어떠한 부분은 좋지 않아 진료가 필요한지, 혹시 위중하여 신속한 전문의의 진료가 필요한 경우는 없는지 나눠서 설명해줘. 정상인 결과들에 대해서도 요약해서 빠짐 없이 설명해주고, 내용을 지어내지 않도록 유의해줘. 일반인에게 어렵게 느껴질 수 있는 의학용어는 괄호안에 아주 간단한 설명을 넣어줘. Don't use ** for header or subheaders, just ouput in plain text or use indents and -."""),
+        ("system", """검진 결과를 보고 종합적으로 생활 습관을 어떻게 조정해야하는지, 어떠한 부분은 좋지 않아 진료가 필요한지, 혹시 위중하여 신속한 전문의의 진료가 필요한 경우는 없는지 나눠서 설명해줘. 정상인 결과들에 대해서도 요약해서 빠짐 없이 설명해주고, 내용을 지어내지 않도록 유의해줘. 비의료인에게 어렵게 느껴질 수 있는 의학용어는 괄호안에 아주 간단한 설명을 넣어줘. Don't use ** for header or subheaders, just ouput in plain text or use indents and -."""),
         ("user", """
 [검진 결과]
 {results}""")

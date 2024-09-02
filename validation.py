@@ -16,7 +16,7 @@ uploaded_file = st.file_uploader("Upload your Excel file", type=['xlsx'])
 
 def check_columns(external_result, description_result):
     refine_prompt = ChatPromptTemplate.from_messages([
-        ("system", """When given two pieces of information, Identify any mismatches or missing information. Be :\n\n"""),
+        ("system", """When given two pieces of information a medical examination result report, Identify any mismatches or missing information. Be :\n\n"""),
         ("user", """
 [Result Report]: 
 {external_result}
