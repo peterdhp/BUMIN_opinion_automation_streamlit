@@ -16,7 +16,47 @@ uploaded_file = st.file_uploader("Upload your Excel file", type=['xlsx'])
 
 def check_columns(external_result, description_result):
     refine_prompt = ChatPromptTemplate.from_messages([
-        ("system", """When given two pieces of information a medical examination result report, Identify any mismatches or missing information. Be :\n\n"""),
+        ("system", """You are going to be given a medical examination result report and a description of the result to inform the patient, Identify any mismatches or missing information. Be sensitive about the urgency mentioned.
+If the description matched the result report, please out "no mismatch". If not, comment why it is mismatching in korean.
+
+This is an example that is considered matching. 
+example Result Report : 
+Finding
+Procedure Note
+Sedation: (Yes)
+Level of sedation : moderate (paradoxical response: no)
+Profopol : 20 mg, Midazolam 5 mg
+ 
+
+
+
+
+Endoscopic finding
+
+
+ESOPHAGUS : The mucosal blurring of Z-line.
+
+
+STOMACH   : Diffuse mucosal atrophy with villous appearance was noticed on antrum and body.
+                  : riased mucosal lesion was noticed on antrum-GC(Bx.A)
+
+
+DUODENUM  : Non-specific finding.
+
+
+Conclusion
+- Reflux esophagitis, LA-minimal change
+- Chronic atrophic gastritis & Intestinal metaplasia
+- Gastric erosion
+
+
+rec) EGD 1year f/u
+
+example Description : 
+* 위내시경 검사에서 역류성 식도염이 관찰되었습니다. 위산 역류를 악화시키는 음주, 흡연, 과식, 기름진 음식, 카페인 음료, 초콜릿 등을 피하시고 속쓰림, 흉부 불편감 등의 증상이 있는 경우 약물 치료를 받으시기 바랍니다. 경과 관찰을 위해 매년 정기적인 위내시경 검사를 받으시기 바랍니다.
+* 위내시경 검사에서 위축성 위염 및 장상피화생 소견이 관찰되었습니다. 함께 시행 한 조직검사결과 만성 위염이 확인되었습니다. 위축성 위염은 위 점막의 위축성 변화이고, 장상피화생은 위 점막 상피의 불완전 재생에 의한 변화를 의미합니다. 경과관찰을 위해 1년 후 위내시경 검사를 받으시기 바랍니다.
+
+         :\n\n"""),
         ("user", """
 [Result Report]: 
 {external_result}
@@ -30,31 +70,23 @@ def check_columns(external_result, description_result):
     output_parser = StrOutputParser()
 
     refine_chain = refine_prompt | llm | output_parser
-
+    output = refine_chain.invoke({'external_result': external_result, 'description_result':description_result})
 
     return output
 
 
 
-def check_columns(external_result, description_result):
-        prompt = f"Compare the following two pieces of information:\n\nExternal Result: {external_result}\nDescription Result: {description_result}\n\nIdentify any mismatches or missing information."
-        response = openai.Completion.create(
-            engine="text-davinci-003",
-            prompt=prompt,
-            max_tokens=50
-        )
-        return response.choices[0].text.strip()
 
 if uploaded_file:
     # Load the uploaded Excel file into a DataFrame
     df = pd.read_excel(uploaded_file)
     
-    st.write("File Uploaded Successfully!")
-    st.write(df.head())
+    #st.write("File Uploaded Successfully!")
+    #st.write(df.head())
 
     # Step 2: Cross-check '외부결과' and '서술결과'
      # Replace with your OpenAI API key
-    
+    df = df[:5]
     
 
     mismatches = []
@@ -68,7 +100,7 @@ if uploaded_file:
         if "no mismatch" not in result.lower():
             mismatches.append({
                 'No': row['No'],
-                '차트번호': row['차트번호'],
+                '차트번호': row['챠트번호'],
                 '성명': row['성명'],
                 'Comment': result
             })
