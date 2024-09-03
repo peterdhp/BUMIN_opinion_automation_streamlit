@@ -57,7 +57,7 @@ def chat_engine(msg_log):
 
     chain = prompt | llm | output_parser    
     
-    output = chain.stream({"result_report" : st.session_state.result_report})
+    output = chain.stream({"result_report" : st.session_state.result_finalreport})
     return output
 
 for message in st.session_state.messages:
