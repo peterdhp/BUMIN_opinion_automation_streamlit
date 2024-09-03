@@ -86,8 +86,8 @@ Only output the result. However, when a biopsy was performed but doesn't have an
 
     return chain
 
-if "result_report" not in st.session_state:
-    st.session_state.result_report = ''
+if "result_finalreport" not in st.session_state:
+    st.session_state.result_finalreport = ''
 if "opinion" not in st.session_state:
     st.session_state.opinion = ''
 if "doc_list" not in st.session_state:
@@ -98,14 +98,14 @@ feedback_option = "thumbs"
 col1, col2 = st.columns(2)
 with col1 :
     with st.form('my_form'):
-        result_report = st.text_area('Enter text:', placeholder='submit test results here', height=400)
+        result_finalreport = st.text_area('Enter text:', placeholder='submit test results here', height=400)
         submitted = st.form_submit_button('Submit')
         if not st.session_state.openai_api_key.startswith('sk-'):
             st.warning('Please enter your OpenAI API key!', icon='⚠')
         if submitted and st.session_state.openai_api_key.startswith('sk-'):
             chain = opinion_generator(model="gpt-4o")
             with collect_runs() as cb:
-                response = chain.invoke(result_report)
+                response = chain.invoke(result_finalreport)
                 st.session_state.run_id = cb.traced_runs[0].id
             opinion = response['opinion']
             doc_list = '\n\n'.join([f"{entry.metadata['test']}  :  {entry.metadata['korean']}" for i, entry in enumerate(response['docs'])])
