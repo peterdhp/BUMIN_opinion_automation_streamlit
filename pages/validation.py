@@ -94,13 +94,12 @@ if uploaded_files:
             result = check_columns(외부결과, 서술결과)
             
             # Create a unique identifier for each patient
-            patient_key = (성명, No, 차트번호)
+            patient_key = (성명, 차트번호)
             
             # If patient doesn't exist in the dictionary, initialize an entry
             if patient_key not in patient_data:
                 patient_data[patient_key] = {
                     '성명': 성명,
-                    'No': No,
                     '챠트번호': 차트번호
                 }
             
