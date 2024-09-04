@@ -8,3 +8,4 @@ faiss-cpu
 streamlit_feedback
 pdfplumber
 tabulate
+openpyxl
