@@ -114,6 +114,13 @@ if uploaded_files:
     # Step 3: Display final results in the Streamlit app
     if not final_results.empty:
         st.write("Validation results for all tests:")
-        st.download_button('result',final_results)
+        @st.cache_data
+        def convert_df(df):
+            # IMPORTANT: Cache the conversion to prevent computation on every rerun
+            return df.to_csv().encode("utf-8")
+
+        csv = convert_df(final_results)
+        st.download_button('result',csv,file_name="result.csv",mime="text/csv",)
+        
     else:
         st.write("No mismatches or missing information found across the files.")
