@@ -7,6 +7,13 @@ from langchain_core.output_parsers import StrOutputParser, CommaSeparatedListOut
 # Step 1: Set up Streamlit app to upload file
 
 from menu_streamlit import menu_with_redirect
+import os
+
+os.environ["LANGCHAIN_API_KEY"] = st.secrets['LANGCHAIN_API_KEY']
+os.environ["LANGCHAIN_TRACING_V2"] = st.secrets['LANGCHAIN_TRACING_V2']
+os.environ["LANGCHAIN_ENDPOINT"] = st.secrets['LANGCHAIN_ENDPOINT']
+os.environ['LANGCHAIN_PROJECT'] = st.secrets['LANGCHAIN_PROJECT']
+
 
 
 menu_with_redirect()
@@ -19,7 +26,7 @@ if openai_api_key == 'bumin':
 uploaded_files = st.file_uploader("Upload your Excel file", type=['xlsx'], accept_multiple_files=True)
 
 def check_columns(external_result, description_result):
-    refine_prompt = ChatPromptTemplate.from_messages([
+    validation_prompt = ChatPromptTemplate.from_messages([
         ("system", """You are going to be given a medical examination result report and a description of the result to inform the patient, Identify any mismatches or missing information. Be sensitive about the urgency mentioned.
 If the description matched the result report, please out "no mismatch". If not, comment why it is mismatching in korean. only output the comment. Be as simple as possible.
 
@@ -61,8 +68,8 @@ example Description :
     llm = ChatOpenAI(model_name="gpt-4o", temperature=0)
     output_parser = StrOutputParser()
 
-    refine_chain = refine_prompt | llm | output_parser
-    output = refine_chain.invoke({'external_result': external_result, 'description_result':description_result})
+    validation_chain = validation_prompt | llm | output_parser
+    output = validation_chain.invoke({'external_result': external_result, 'description_result':description_result})
 
     return output
 
