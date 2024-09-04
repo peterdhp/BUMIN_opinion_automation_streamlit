@@ -1,11 +1,15 @@
 import streamlit as st
 import pandas as pd
-import openai
 from langchain_openai.embeddings import OpenAIEmbeddings
 from langchain_core.prompts import ChatPromptTemplate, PromptTemplate
 from langchain_openai import ChatOpenAI
 from langchain_core.output_parsers import StrOutputParser, CommaSeparatedListOutputParser
 # Step 1: Set up Streamlit app to upload file
+
+from menu_streamlit import menu_with_redirect
+
+
+menu_with_redirect()
 st.title('Validation')
 
 openai_api_key = st.sidebar.text_input('OpenAI API Key', value='', type='password')
