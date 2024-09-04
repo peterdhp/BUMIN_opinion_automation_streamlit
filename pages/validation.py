@@ -12,12 +12,12 @@ openai_api_key = st.sidebar.text_input('OpenAI API Key', value='', type='passwor
 if openai_api_key == 'bumin':
     openai_api_key = st.secrets['OPENAI_API_KEY']
 
-uploaded_file = st.file_uploader("Upload your Excel file", type=['xlsx'])
+uploaded_files = st.file_uploader("Upload your Excel file", type=['xlsx'], accept_multiple_files=True)
 
 def check_columns(external_result, description_result):
     refine_prompt = ChatPromptTemplate.from_messages([
         ("system", """You are going to be given a medical examination result report and a description of the result to inform the patient, Identify any mismatches or missing information. Be sensitive about the urgency mentioned.
-If the description matched the result report, please out "no mismatch". If not, comment why it is mismatching in korean.
+If the description matched the result report, please out "no mismatch". If not, comment why it is mismatching in korean. only output the comment. Be as simple as possible.
 
 This is an example that is considered matching. 
 example Result Report : 
@@ -26,29 +26,17 @@ Procedure Note
 Sedation: (Yes)
 Level of sedation : moderate (paradoxical response: no)
 Profopol : 20 mg, Midazolam 5 mg
- 
-
-
-
 
 Endoscopic finding
-
-
 ESOPHAGUS : The mucosal blurring of Z-line.
-
-
 STOMACH   : Diffuse mucosal atrophy with villous appearance was noticed on antrum and body.
                   : riased mucosal lesion was noticed on antrum-GC(Bx.A)
-
-
 DUODENUM  : Non-specific finding.
-
 
 Conclusion
 - Reflux esophagitis, LA-minimal change
 - Chronic atrophic gastritis & Intestinal metaplasia
 - Gastric erosion
-
 
 rec) EGD 1year f/u
 
@@ -77,38 +65,44 @@ example Description :
 
 
 
-if uploaded_file:
+if uploaded_files:
     # Load the uploaded Excel file into a DataFrame
-    df = pd.read_excel(uploaded_file)
-    
-    #st.write("File Uploaded Successfully!")
-    #st.write(df.head())
-
-    # Step 2: Cross-check '외부결과' and '서술결과'
-     # Replace with your OpenAI API key
-    df = df[:5]
-    
-
-    mismatches = []
-
-    for index, row in df.iterrows():
-        external = row['외부결과']
-        opinion = row['서술결과']
+    patient_data = {}
+    for uploaded_file in uploaded_files:
+        df = pd.read_excel(uploaded_file)
         
-        result = check_columns(external, opinion)
-        
-        if "no mismatch" not in result.lower():
-            mismatches.append({
-                'No': row['No'],
-                '차트번호': row['챠트번호'],
-                '성명': row['성명'],
-                'Comment': result
-            })
+        # Process each row of the file
+        for index, row in df.iterrows():
+            외부결과 = row['외부결과']
+            서술결과 = row['서술결과']
+            검사명칭 = row['검사명칭']
+            성명 = row['성명']
+            No = row['No']
+            차트번호 = row['차트번호']
 
-    # Step 3: Display results in the Streamlit app
-    if mismatches:
-        st.write("Mismatches or missing information found:")
-        mismatch_df = pd.DataFrame(mismatches)
-        st.download_buttonl('result',mismatch_df)
+            result = check_columns(외부결과, 서술결과)
+            
+            # Create a unique identifier for each patient
+            patient_key = (성명, No, 차트번호)
+            
+            # If patient doesn't exist in the dictionary, initialize an entry
+            if patient_key not in patient_data:
+                patient_data[patient_key] = {
+                    '성명': 성명,
+                    'No': No,
+                    '차트번호': 차트번호
+                }
+            
+            # Add the test validation result as a new column based on '검사명칭'
+            patient_data[patient_key][검사명칭] = result
+              # Adding a delay to prevent rate limit issues
+
+    # Convert the patient data dictionary to a DataFrame for displaying
+    final_results = pd.DataFrame(patient_data.values())
+
+    # Step 3: Display final results in the Streamlit app
+    if not final_results.empty:
+        st.write("Validation results for all tests:")
+        st.download_button('result',final_results)
     else:
-        st.write("No mismatches or missing information found.")
+        st.write("No mismatches or missing information found across the files.")
