@@ -89,7 +89,7 @@ if uploaded_files:
             검사명칭 = row['검사명칭']
             성명 = row['성명']
             No = row['No']
-            차트번호 = row['차트번호']
+            차트번호 = row['챠트번호']
 
             result = check_columns(외부결과, 서술결과)
             
@@ -101,7 +101,7 @@ if uploaded_files:
                 patient_data[patient_key] = {
                     '성명': 성명,
                     'No': No,
-                    '차트번호': 차트번호
+                    '챠트번호': 차트번호
                 }
             
             # Add the test validation result as a new column based on '검사명칭'
