@@ -15,6 +15,7 @@ def authenticated_menu():
     st.sidebar.page_link("pages/result_opinion.py", label="검사 소견 자동 작성")
     st.sidebar.page_link("pages/overall_opinion.py", label="종합 소견 자동 작성")
     st.sidebar.page_link("pages/overall_opinion_english.py", label="종합 소견 자동 작성 (영문버전)")
+    st.sidebar.page_link("pages/validation.py", label="validation")
             
     if 'patient_info' in st.session_state:
         st.sidebar.write(st.session_state.patient_info)

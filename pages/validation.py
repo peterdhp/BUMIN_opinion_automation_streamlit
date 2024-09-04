@@ -6,7 +6,7 @@ from langchain_core.prompts import ChatPromptTemplate, PromptTemplate
 from langchain_openai import ChatOpenAI
 from langchain_core.output_parsers import StrOutputParser, CommaSeparatedListOutputParser
 # Step 1: Set up Streamlit app to upload file
-st.title('Data Validation App')
+st.title('Validation')
 
 openai_api_key = st.sidebar.text_input('OpenAI API Key', value='', type='password')
 if openai_api_key == 'bumin':
@@ -109,6 +109,6 @@ if uploaded_file:
     if mismatches:
         st.write("Mismatches or missing information found:")
         mismatch_df = pd.DataFrame(mismatches)
-        st.write(mismatch_df)
+        st.download_buttonl('result',mismatch_df)
     else:
         st.write("No mismatches or missing information found.")
