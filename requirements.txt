@@ -9,3 +9,5 @@ streamlit_feedback
 pdfplumber
 tabulate
 openpyxl
+xlsxwriter
+io
