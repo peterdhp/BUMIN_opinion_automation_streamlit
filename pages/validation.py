@@ -113,13 +113,15 @@ if uploaded_files:
 
     # Convert the patient data dictionary to a DataFrame for displaying
         final_results = pd.DataFrame(patient_data.values())
-        processed ==True
     
-    output = BytesIO()
-    with pd.ExcelWriter(output, engine='xlsxwriter') as writer:
-        for test_date, group in final_results.groupby('검진일'):
-            # Write each group (corresponding to a test date) into a separate sheet
-            group.to_excel(writer, sheet_name=str(test_date), index=False)
+        output = BytesIO()
+        with pd.ExcelWriter(output, engine='xlsxwriter') as writer:
+            for test_date, group in final_results.groupby('검진일'):
+                # Write each group (corresponding to a test date) into a separate sheet
+                group.to_excel(writer, sheet_name=str(test_date), index=False)
+                
+        
+        processed ==True
 
     # Step 3: Display final results in the Streamlit app
     if not final_results.empty:
