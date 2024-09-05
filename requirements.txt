@@ -10,4 +10,3 @@ pdfplumber
 tabulate
 openpyxl
 xlsxwriter
-io
