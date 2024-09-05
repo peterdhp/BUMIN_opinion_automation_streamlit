@@ -6,6 +6,7 @@ from langchain_openai import ChatOpenAI
 from langchain_core.output_parsers import StrOutputParser, CommaSeparatedListOutputParser
 # Step 1: Set up Streamlit app to upload file
 
+from io import BytesIO
 from menu_streamlit import menu_with_redirect
 import os
 
@@ -90,17 +91,19 @@ if uploaded_files:
             성명 = row['성명']
             No = row['No']
             차트번호 = row['챠트번호']
+            검진일 = row['검진일']
 
             result = check_columns(외부결과, 서술결과)
             
             # Create a unique identifier for each patient
-            patient_key = (성명, 차트번호)
+            patient_key = (성명, 차트번호, 검진일)
             
             # If patient doesn't exist in the dictionary, initialize an entry
             if patient_key not in patient_data:
                 patient_data[patient_key] = {
                     '성명': 성명,
-                    '챠트번호': 차트번호
+                    '챠트번호': 차트번호,
+                    '검진일': 검진일
                 }
             
             # Add the test validation result as a new column based on '검사명칭'
@@ -109,17 +112,21 @@ if uploaded_files:
 
     # Convert the patient data dictionary to a DataFrame for displaying
     final_results = pd.DataFrame(patient_data.values())
+    
+    output = BytesIO()
+    with pd.ExcelWriter(output, engine='xlsxwriter') as writer:
+        for test_date, group in final_results.groupby('검진일'):
+            # Write each group (corresponding to a test date) into a separate sheet
+            group.to_excel(writer, sheet_name=str(test_date), index=False)
 
     # Step 3: Display final results in the Streamlit app
     if not final_results.empty:
-        st.write("Validation results for all tests:")
-        @st.cache_data
-        def convert_df(df):
-            # IMPORTANT: Cache the conversion to prevent computation on every rerun
-            return df.to_csv().encode("utf-8-sig")
-
-        csv = convert_df(final_results)
-        st.download_button('result',csv,file_name="result.csv",mime="text/csv",)
+        st.download_button(
+        label="Download Excel file with validation results",
+        data=output,
+        file_name="validation_results.xlsx",
+        mime="application/vnd.openxmlformats-officedocument.spreadsheetml.sheet"
+    )
         
     else:
         st.write("No mismatches or missing information found across the files.")
