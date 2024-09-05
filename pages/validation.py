@@ -19,6 +19,7 @@ os.environ['LANGCHAIN_PROJECT'] = st.secrets['LANGCHAIN_PROJECT']
 
 menu_with_redirect()
 st.title('Validation')
+processed = False
 
 openai_api_key = st.sidebar.text_input('OpenAI API Key', value='', type='password')
 if openai_api_key == 'bumin':
@@ -76,42 +77,43 @@ example Description :
 
 
 
-
 if uploaded_files:
-    # Load the uploaded Excel file into a DataFrame
-    patient_data = {}
-    for uploaded_file in uploaded_files:
-        df = pd.read_excel(uploaded_file)
-        
-        # Process each row of the file
-        for index, row in df.iterrows():
-            외부결과 = row['외부결과']
-            서술결과 = row['서술결과']
-            검사명칭 = row['검사명칭']
-            성명 = row['성명']
-            No = row['No']
-            차트번호 = row['챠트번호']
-            검진일 = row['검진일']
+    if processed == False:
+        # Load the uploaded Excel file into a DataFrame
+        patient_data = {}
+        for uploaded_file in uploaded_files:
+            df = pd.read_excel(uploaded_file)
+            
+            # Process each row of the file
+            for index, row in df.iterrows():
+                외부결과 = row['외부결과']
+                서술결과 = row['서술결과']
+                검사명칭 = row['검사명칭']
+                성명 = row['성명']
+                No = row['No']
+                차트번호 = row['챠트번호']
+                검진일 = row['검진일']
 
-            result = check_columns(외부결과, 서술결과)
-            
-            # Create a unique identifier for each patient
-            patient_key = (성명, 차트번호, 검진일)
-            
-            # If patient doesn't exist in the dictionary, initialize an entry
-            if patient_key not in patient_data:
-                patient_data[patient_key] = {
-                    '성명': 성명,
-                    '챠트번호': 차트번호,
-                    '검진일': 검진일
-                }
-            
-            # Add the test validation result as a new column based on '검사명칭'
-            patient_data[patient_key][검사명칭] = result
-              # Adding a delay to prevent rate limit issues
+                result = check_columns(외부결과, 서술결과)
+                
+                # Create a unique identifier for each patient
+                patient_key = (성명, 차트번호, 검진일)
+                
+                # If patient doesn't exist in the dictionary, initialize an entry
+                if patient_key not in patient_data:
+                    patient_data[patient_key] = {
+                        '성명': 성명,
+                        '챠트번호': 차트번호,
+                        '검진일': 검진일
+                    }
+                
+                # Add the test validation result as a new column based on '검사명칭'
+                patient_data[patient_key][검사명칭] = result
+                # Adding a delay to prevent rate limit issues
 
     # Convert the patient data dictionary to a DataFrame for displaying
-    final_results = pd.DataFrame(patient_data.values())
+        final_results = pd.DataFrame(patient_data.values())
+        processed ==True
     
     output = BytesIO()
     with pd.ExcelWriter(output, engine='xlsxwriter') as writer:
