@@ -123,7 +123,7 @@ if uploaded_files:
     # Convert the patient data dictionary to a DataFrame for displaying
         final_results = pd.DataFrame(patient_data.values())
         
-        columns_to_include = ['성명', 'No', '차트번호'] + desired_column_order
+        columns_to_include = ['성명', '차트번호'] + desired_column_order
         # Reorder the columns (any missing columns will automatically be empty)
         final_results = final_results.reindex(columns=columns_to_include, fill_value="")
     
