@@ -27,6 +27,15 @@ if openai_api_key == 'bumin':
 
 uploaded_files = st.file_uploader("Upload your Excel file", type=['xlsx'], accept_multiple_files=True)
 
+desired_column_order = [
+    '인유두종바이러스', '상부소화관 내시경검사(수면)', '상부소화관 내시경검사(일반)', 
+    '대장내시경(수면)', '대장내시경(일반)', '상복부초음파검사', '하복부초음파(남여공용)', 
+    '감상선초음파', '경동맥초음파', '유방X선검사', '유방초음파검사', '흉부X검사', 
+    '폐CT', '자궁경부암', '경추CT', '경추촬영+측명', '요추 CT', '요추촬영+측면', '뇌CT', 
+    'Brain MRI', '심장초음파', '경동맥MRA', 'MRA(뇌)', '무릎-X선(우측)', '무릎-X선(좌측)', 
+    '어깨X-선(우측)', '어깨X-선(좌측)', 'C-spine(경추) MRI', 'L-spine(요추) MRI'
+]
+
 def check_columns(external_result, description_result):
     validation_prompt = ChatPromptTemplate.from_messages([
         ("system", """You are going to be given a medical examination result report and a description of the result to inform the patient, Identify any mismatches or missing information. Be sensitive about the urgency mentioned.
@@ -113,6 +122,10 @@ if uploaded_files:
 
     # Convert the patient data dictionary to a DataFrame for displaying
         final_results = pd.DataFrame(patient_data.values())
+        
+        columns_to_include = ['성명', 'No', '차트번호'] + desired_column_order
+        # Reorder the columns (any missing columns will automatically be empty)
+        final_results = final_results.reindex(columns=columns_to_include, fill_value="")
     
         output = BytesIO()
         with pd.ExcelWriter(output, engine='xlsxwriter') as writer:
