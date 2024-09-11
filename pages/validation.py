@@ -30,7 +30,7 @@ uploaded_files = st.file_uploader("Upload your Excel file", type=['xlsx'], accep
 desired_column_order = [
     '인유두종바이러스', '상부소화관 내시경검사(수면)', '상부소화관 내시경검사(일반)', 
     '대장내시경(수면)', '대장내시경(일반)', '상복부초음파검사', '하복부초음파(남여공용)', 
-    '감상선초음파', '경동맥초음파', '유방X선검사', '유방초음파검사', '흉부X검사', 
+    '갑상선초음파', '경동맥초음파', '유방X선검사', '유방초음파검사', '흉부X검사', 
     '폐CT', '자궁경부암', '경추CT', '경추촬영+측명', '요추 CT', '요추촬영+측면', '뇌CT', 
     'Brain MRI', '심장초음파', '경동맥MRA', 'MRA(뇌)', '무릎-X선(우측)', '무릎-X선(좌측)', 
     '어깨X-선(우측)', '어깨X-선(좌측)', 'C-spine(경추) MRI', 'L-spine(요추) MRI'
@@ -41,7 +41,7 @@ def check_columns(external_result, description_result):
         ("system", """You are going to be given a medical examination result report and a description of the result to inform the patient, Identify any mismatches or missing information. Be sensitive about the urgency mentioned.
 If the description matched the result report, please out "no mismatch". If not, comment why it is mismatching in korean. only output the comment. Be as simple as possible.
 
-This is an example that is considered matching. 
+This is an example of a result report and description that are considered matching. 
 example Result Report : 
 Finding
 Procedure Note
@@ -65,8 +65,7 @@ rec) EGD 1year f/u
 example Description : 
 * 위내시경 검사에서 역류성 식도염이 관찰되었습니다. 위산 역류를 악화시키는 음주, 흡연, 과식, 기름진 음식, 카페인 음료, 초콜릿 등을 피하시고 속쓰림, 흉부 불편감 등의 증상이 있는 경우 약물 치료를 받으시기 바랍니다. 경과 관찰을 위해 매년 정기적인 위내시경 검사를 받으시기 바랍니다.
 * 위내시경 검사에서 위축성 위염 및 장상피화생 소견이 관찰되었습니다. 함께 시행 한 조직검사결과 만성 위염이 확인되었습니다. 위축성 위염은 위 점막의 위축성 변화이고, 장상피화생은 위 점막 상피의 불완전 재생에 의한 변화를 의미합니다. 경과관찰을 위해 1년 후 위내시경 검사를 받으시기 바랍니다.
-
-         :\n\n"""),
+-------"""),
         ("user", """
 [Result Report]: 
 {external_result}
@@ -123,9 +122,15 @@ if uploaded_files:
     # Convert the patient data dictionary to a DataFrame for displaying
         final_results = pd.DataFrame(patient_data.values())
         
-        columns_to_include = ['성명', '차트번호'] + desired_column_order
+        columns_to_include = ['성명', '챠트번호'] + desired_column_order
+        
+        # Ensure missing columns are accounted for by creating empty columns if needed
+        for col in desired_column_order:
+            if col not in final_results.columns:
+                final_results[col] = ""  # Assign empty values
         # Reorder the columns (any missing columns will automatically be empty)
-        final_results = final_results.reindex(columns=columns_to_include, fill_value="")
+        
+        final_results = final_results[columns_to_include]
     
         output = BytesIO()
         with pd.ExcelWriter(output, engine='xlsxwriter') as writer:
