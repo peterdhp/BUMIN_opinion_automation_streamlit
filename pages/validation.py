@@ -67,7 +67,7 @@ example Description :
 * 위내시경 검사에서 위축성 위염 및 장상피화생 소견이 관찰되었습니다. 함께 시행 한 조직검사결과 만성 위염이 확인되었습니다. 위축성 위염은 위 점막의 위축성 변화이고, 장상피화생은 위 점막 상피의 불완전 재생에 의한 변화를 의미합니다. 경과관찰을 위해 1년 후 위내시경 검사를 받으시기 바랍니다.
 -------"""),
         ("user", """
-[Result Report]: 
+[Result Report]: `
 {external_result}
 
 [Description Report]: 
@@ -122,7 +122,7 @@ if uploaded_files:
     # Convert the patient data dictionary to a DataFrame for displaying
         final_results = pd.DataFrame(patient_data.values())
         
-        columns_to_include = ['성명', '챠트번호'] + desired_column_order
+        columns_to_include = ['성명', '챠트번호','검진일'] + desired_column_order
         
         # Ensure missing columns are accounted for by creating empty columns if needed
         for col in desired_column_order:
