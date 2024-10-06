@@ -13,6 +13,7 @@ def authenticated_menu():
     st.sidebar.page_link("app_streamlit.py", label="API key 재등록하기")
             
     st.sidebar.page_link("pages/result_opinion.py", label="검사 소견 자동 작성")
+    st.sidebar.page_link("pages/result_opinion_new.py", label="새로운 검사 소견 자동 작성 및 소견 요약")
     st.sidebar.page_link("pages/overall_opinion.py", label="종합 소견 자동 작성")
     st.sidebar.page_link("pages/overall_opinion_english.py", label="종합 소견 자동 작성 (영문버전)")
     
