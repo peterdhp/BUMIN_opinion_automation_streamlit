@@ -144,7 +144,7 @@ with col1 :
 with col2 :
     
 
-    with st.form('my_form'):
+    with st.form('my_form_2'):
         multi_opinion = st.text_area('Enter text:', placeholder='여러 소견 입력', height=400)
         submitted = st.form_submit_button('Submit')
         if not st.session_state.openai_api_key.startswith('sk-'):
