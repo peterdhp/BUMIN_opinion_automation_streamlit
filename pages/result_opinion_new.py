@@ -32,7 +32,8 @@ os.environ['LANGCHAIN_PROJECT'] = st.secrets['LANGCHAIN_PROJECT']
 
 menu_with_redirect()
 
-client = Client()
+client1 = Client()
+client2 = Client()
 
 
 def opinion_generator_new(model):
@@ -125,7 +126,7 @@ with col1 :
                 feedback_type_str = f"{feedback_option} {feedback_1['score']}"
 
                 # Record the feedback with the formulated feedback type string and optional comment
-                feedback_record = client.create_feedback(
+                feedback_record = client1.create_feedback(
                     run_id,
                     feedback_type_str,
                     score=score,
@@ -185,7 +186,7 @@ with col2 :
                 feedback_type_str = f"{feedback_option} {feedback_2['score']}"
 
                 # Record the feedback with the formulated feedback type string and optional comment
-                feedback_record = client.create_feedback(
+                feedback_record = client2.create_feedback(
                     run_id,
                     feedback_type_str,
                     score=score,
