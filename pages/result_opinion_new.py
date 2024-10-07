@@ -72,8 +72,8 @@ if "diagnosis" not in st.session_state:
     st.session_state.diagnosis = ''
 if "multi_opinion" not in st.session_state:
     st.session_state.multi_opinion = ''
-if "opinion" not in st.session_state:
-    st.session_state.opinion = ''
+if "opinion_new" not in st.session_state:
+    st.session_state.opinion_new = ''
 if "opinion_summary" not in st.session_state:
     st.session_state.opinion_summary = ''
 
@@ -85,19 +85,18 @@ feedback_option = "thumbs"
 col1, col2 = st.columns(2)
 with col1 :
     with st.form('my_form'):
-        diagnosis = st.text_input('Enter text:', placeholder='진단명 입력')
+        diagnosis_new = st.text_input('Enter text:', placeholder='진단명 입력')
         submitted = st.form_submit_button('Submit')
         if not st.session_state.openai_api_key.startswith('sk-'):
             st.warning('Please enter your OpenAI API key!', icon='⚠')
         if submitted and st.session_state.openai_api_key.startswith('sk-'):
             chain = opinion_generator_new(model="gpt-4o")
             with collect_runs() as cb:
-                response = chain.invoke(diagnosis)
+                response = chain.invoke(diagnosis_new)
                 st.session_state.run_id = cb.traced_runs[0].id
-            opinion = response
-            st.session_state.opinion = opinion # Store the opinion in the session state
-    if not st.session_state.opinion == '' :
-        st.info('*'+st.session_state.opinion)
+            st.session_state.opinion_new = response # Store the opinion in the session state
+    if not st.session_state.opinion_new == '' :
+        st.info('*'+st.session_state.opinion_new)
         
     
     if st.session_state.get("run_id"):
