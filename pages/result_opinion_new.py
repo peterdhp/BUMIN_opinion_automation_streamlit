@@ -55,7 +55,7 @@ output : 전도 검사에서 비특이적 T 팡 이상 소견이 관찰됩니다
 
 def multi_opinion_summary(model):
     opinion_prompt = ChatPromptTemplate.from_messages([
-        ("system", """You are a doctor at a health screening center. Given multiple paragraphs containing health advice about the test results, summarize and rephrase it into a more readble paragraphs. Try to output as less paragraphs as possible."""),
+        ("system", """You are a doctor at a health screening center. Given multiple paragraphs containing health advice about the test results, summarize and rephrase it into a more readble paragraphs in the order of results, information and recommendation. Try to output as less paragraphs as possible."""),
         ("user", """{multi_results}
 
 심""")
