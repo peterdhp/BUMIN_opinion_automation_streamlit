@@ -101,7 +101,7 @@ with col1 :
     
     if st.session_state.get("run_id"):
         run_id = st.session_state.run_id# Debug print for Run ID
-        feedback = streamlit_feedback(
+        feedback_1 = streamlit_feedback(
             feedback_type=feedback_option,
             optional_text_label="코멘트를 입력해주세요.",
             key=f"feedback_{run_id}",
@@ -116,20 +116,20 @@ with col1 :
         # Get the score mapping based on the selected feedback option
         scores = score_mappings[feedback_option]
 
-        if feedback:
+        if feedback_1:
             # Get the score from the selected feedback option's score mapping
-            score = scores.get(feedback["score"])
+            score = scores.get(feedback_1["score"])
 
             if score is not None:
                 # Formulate feedback type string incorporating the feedback option and score value
-                feedback_type_str = f"{feedback_option} {feedback['score']}"
+                feedback_type_str = f"{feedback_option} {feedback_1['score']}"
 
                 # Record the feedback with the formulated feedback type string and optional comment
                 feedback_record = client.create_feedback(
                     run_id,
                     feedback_type_str,
                     score=score,
-                    comment=feedback.get("text"),
+                    comment=feedback_1.get("text"),
                 )
                 st.session_state.feedback = {
                     "feedback_id": str(feedback_record.id),
@@ -161,7 +161,7 @@ with col2 :
     
     if st.session_state.get("run_id"):
         run_id = st.session_state.run_id# Debug print for Run ID
-        feedback = streamlit_feedback(
+        feedback_2 = streamlit_feedback(
             feedback_type=feedback_option,
             optional_text_label="코멘트를 입력해주세요.",
             key=f"feedback_{run_id}",
@@ -176,20 +176,20 @@ with col2 :
         # Get the score mapping based on the selected feedback option
         scores = score_mappings[feedback_option]
 
-        if feedback:
+        if feedback_2:
             # Get the score from the selected feedback option's score mapping
-            score = scores.get(feedback["score"])
+            score = scores.get(feedback_2["score"])
 
             if score is not None:
                 # Formulate feedback type string incorporating the feedback option and score value
-                feedback_type_str = f"{feedback_option} {feedback['score']}"
+                feedback_type_str = f"{feedback_option} {feedback_2['score']}"
 
                 # Record the feedback with the formulated feedback type string and optional comment
                 feedback_record = client.create_feedback(
                     run_id,
                     feedback_type_str,
                     score=score,
-                    comment=feedback.get("text"),
+                    comment=feedback_2.get("text"),
                 )
                 st.session_state.feedback = {
                     "feedback_id": str(feedback_record.id),
