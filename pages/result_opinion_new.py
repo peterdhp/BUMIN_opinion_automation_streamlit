@@ -56,7 +56,7 @@ output : 전도 검사에서 비특이적 T 팡 이상 소견이 관찰됩니다
 
 def multi_opinion_summary(model):
     opinion_prompt = ChatPromptTemplate.from_messages([
-        ("system", """You are a doctor at a health screening center. Given statements, summarize and rephrase it into a more readble single paragraph. 여러 소견 있을 때는 'ㅇㅇㅇ,ㅇㅇㅇ 및 ㅇㅇㅇ이 관찰됩니다.'으로 시작해서 설명을 덧붙이고 추적관찰, 어떤 과를 가라는 내용을 마지막에 적어줘 """),
+        ("system", """환자한테 설명하는 내용들이 여러개 있을 때 한 문단으로 자연스럽게 합쳐줘. 첫 문장은 'ㅇㅇㅇ 검사에서 ㅇㅇㅇ,ㅇㅇㅇ 및 ㅇㅇㅇ이 관찰됩니다.'으로 시작해서 설명을 덧붙이고 추적관찰, 어떤 과를 가라는 내용을 마지막에 적어줘 """),
         ("user", """{multi_results}
 
 심""")
