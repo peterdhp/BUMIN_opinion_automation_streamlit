@@ -69,7 +69,7 @@ if uploaded_file:
         processed =True
 
     # Step 3: Display final results in the Streamlit app
-    if not output_text.empty:
+    if not output_text == "":
         st.download_button(
             label="Download Patient Results",
             data=output_text,
