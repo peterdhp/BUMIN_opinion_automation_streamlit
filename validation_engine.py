@@ -204,12 +204,12 @@ workflow.add_conditional_edges(
     START,
     validate,
     {
-        "comment": "comment",
+        "comment": "comment_node",
         "end": END,
     },
 )
 workflow.add_conditional_edges(
-    "comment",
+    "comment_node",
     comment_type,
     {
         "generate": "generate_new",
