@@ -36,8 +36,8 @@ if uploaded_file:
         
         # Filter rows where 'type' is 2
         filtered_df = df[df['type'] == 2]
-        patient_chart_number = 332655  # Replace with the chart number of the patient you want to test
-        filtered_df = filtered_df[filtered_df['챠트번호'] == patient_chart_number]
+        #patient_chart_number = 332655  # Replace with the chart number of the patient you want to test
+        #filtered_df = filtered_df[filtered_df['챠트번호'] == patient_chart_number]
         
 
         # Filter out rows with '검사명칭' matching the given values
@@ -56,7 +56,7 @@ if uploaded_file:
             output_text += f"{patient_name[0]}    {patient_name[1]})\n"
             for _, row in patient_data.iterrows():
                 result = validation_chain.invoke({"test_report" : row['외부결과'], "explanation" : row['서술결과']})
-                print(result)
+                #print(result)
                 if 'comment' in result and 'new_explanation' in result:
                     output_text += f"{row.get('검사명칭', 'Unknown Test')} - {result['comment']}\n{result['new_explanation']}\n"
                 elif 'comment' in result:
