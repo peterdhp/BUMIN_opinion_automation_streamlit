@@ -52,9 +52,8 @@ if uploaded_file:
         
         for patient_name, patient_data in filtered_df.groupby(['성명', '챠트번호']):
             output_text += f"Patient: {patient_name[0]} (Chart No: {patient_name[1]})\n"
-            st.write(output_text)
             for _, row in patient_data.iterrows():
-                st.write(row['외부결과'], row['서술결과'])
+                output_text += row['검사명칭'] + "\n"
                 """
                 result = validation_chain.invoke(row['외부결과'], row['서술결과'])
                 
@@ -69,13 +68,16 @@ if uploaded_file:
             output_text += "---------------------\n"
         processed =True
 
-    # Step 3: Display final results in the Streamlit app
-    if output_text is not "":
-        st.write(output_text)
-        st.download_button(
-            label="Download Patient Results",
-            data=output_text,
-            file_name='patient_results_single_patient.txt',
-            mime='text/plain'
-        )
+    # Step 3: Display final results in the Streamlit ap
+    if processed ==True :
+        if output_text is not "":
+            st.write(output_text)
+            st.download_button(
+                label="Download Patient Results",
+                data=output_text,
+                file_name='patient_results_single_patient.txt',
+                mime='text/plain'
+            )
+        else :
+            st.write("No results found")
         
