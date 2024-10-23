@@ -10,3 +10,4 @@ pdfplumber
 tabulate
 openpyxl
 xlsxwriter
+langgraph
