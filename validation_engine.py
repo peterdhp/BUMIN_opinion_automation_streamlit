@@ -103,11 +103,11 @@ def validate(state):
     """
 
     
-    explanation = state["explantion"]
+    explanation = state["explanation"]
     test_report = state["test_report"]
     
     
-    response = hallucination_grader.invoke({'explantion':explanation, 'report': test_report})
+    response = hallucination_grader.invoke({'explanation':explanation, 'report': test_report})
     validation = response.binary_score
 
     if validation == "no":
