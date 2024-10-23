@@ -82,7 +82,7 @@ explanation_fixer_system_prompt = """Test report and an prewritten explanation a
 explanation_fixer_prompt = ChatPromptTemplate.from_messages(
     [
         ("system", explanation_fixer_system_prompt),
-        ("human", "Test Report: {report}\n\nPrevious Explanation: {explanation}\n\nComment: {Comment}"),
+        ("human", "Test Report: {report}\n\nPrevious Explanation: {explanation}\n\nComment: {comment}"),
     ]
 )
 explanation_fixer = explanation_fixer_prompt | structured_llm_explanation_fixer
