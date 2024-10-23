@@ -43,7 +43,7 @@ class MismatchComment(BaseModel):
     )
 structured_llm_commenter = llm4o.with_structured_output(MismatchComment)
 
-comment_system_prompt = """When given a explanation that does not match the test report, give a comment why it doesn't match.\n\nBe as clear as possible."""
+comment_system_prompt = """When given a explanation that does not match the test report, give a comment why it doesn't match.\n\nBe as clear and brief as possible, you can simply give 1 word as comment if that is enough. Use Korean"""
 comment_prompt = ChatPromptTemplate.from_messages(
     [
         ("system", comment_system_prompt),
