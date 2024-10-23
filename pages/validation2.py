@@ -45,14 +45,16 @@ if uploaded_file:
         # Filter for a specific patient using their '챠트번호'
         patient_chart_number = '00332655'  # Replace with the chart number of the patient you want to test
         filtered_df = filtered_df[filtered_df['챠트번호'] == patient_chart_number]
-        
+        ''''''
 
         # Group by patient and iterate through their tests
         
         for patient_name, patient_data in filtered_df.groupby(['성명', '챠트번호']):
             output_text += f"Patient: {patient_name[0]} (Chart No: {patient_name[1]})\n"
-            
+            st.write(output_text)
             for _, row in patient_data.iterrows():
+                print(row['외부결과'], row['서술결과'])
+                """
                 result = validation_chain.invoke(row['외부결과'], row['서술결과'])
                 
                 if 'comment' in result and 'new_explanation' in result:
@@ -61,7 +63,7 @@ if uploaded_file:
                     output_text += f"{row.get('검사명칭', 'Unknown Test')} - {result['comment']}\n"
                 else:
                     output_text += f"{row.get('검사명칭', 'Unknown Test')} - 소견 일치\n"
-            
+                """
             # Separator between different patients
             output_text += "---------------------\n"
         processed =True
