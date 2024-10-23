@@ -77,5 +77,3 @@ if uploaded_file:
             mime='text/plain'
         )
         
-    else:
-        st.write("No mismatches or missing information found across the files.")
