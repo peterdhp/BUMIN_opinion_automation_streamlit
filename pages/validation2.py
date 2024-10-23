@@ -35,7 +35,7 @@ if uploaded_file:
         
         # Filter rows where 'type' is 2
         filtered_df = df[df['type'] == 2]
-        patient_chart_number = '00332655'  # Replace with the chart number of the patient you want to test
+        patient_chart_number = 332655  # Replace with the chart number of the patient you want to test
         filtered_df = filtered_df[filtered_df['챠트번호'] == patient_chart_number]
         st.table(filtered_df)
 
