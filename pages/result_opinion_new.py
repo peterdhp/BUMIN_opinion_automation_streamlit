@@ -94,18 +94,18 @@ with col1 :
             chain = opinion_generator_new(model="gpt-4o")
             with collect_runs() as cb:
                 response = chain.invoke(diagnosis_new)
-                st.session_state.run_id = cb.traced_runs[0].id
+                st.session_state.run_id_1 = cb.traced_runs[0].id
             st.session_state.opinion_new = response # Store the opinion in the session state
     if not st.session_state.opinion_new == '' :
         st.info('*'+st.session_state.opinion_new)
         
     
     if st.session_state.get("run_id"):
-        run_id = st.session_state.run_id# Debug print for Run ID
+        run_id_1 = st.session_state.run_id_1# Debug print for Run ID
         feedback_1 = streamlit_feedback(
             feedback_type=feedback_option,
             optional_text_label="코멘트를 입력해주세요.",
-            key=f"feedback_{run_id}",
+            key=f"feedback_{run_id_1}",
         )
 
         # Define score mappings for both "thumbs" and "faces" feedback systems
@@ -127,7 +127,7 @@ with col1 :
 
                 # Record the feedback with the formulated feedback type string and optional comment
                 feedback_record = client1.create_feedback(
-                    run_id,
+                    run_id_1,
                     feedback_type_str,
                     score=score,
                     comment=feedback_1.get("text"),
@@ -153,7 +153,7 @@ with col2 :
             chain = multi_opinion_summary(model="gpt-4o")
             with collect_runs() as cb:
                 response = chain.invoke(multi_opinion)
-                st.session_state.run_id = cb.traced_runs[0].id
+                st.session_state.run_id_2 = cb.traced_runs[0].id
             opinion = response
             st.session_state.opinion_summary = opinion # Store the opinion in the session state
     if not st.session_state.opinion_summary == '' :
@@ -161,11 +161,11 @@ with col2 :
         
     
     if st.session_state.get("run_id"):
-        run_id = st.session_state.run_id# Debug print for Run ID
+        run_id_2 = st.session_state.run_id_2# Debug print for Run ID
         feedback_2 = streamlit_feedback(
             feedback_type=feedback_option,
             optional_text_label="코멘트를 입력해주세요.",
-            key=f"feedback_{run_id}",
+            key=f"feedback_{run_id_2}",
         )
 
         # Define score mappings for both "thumbs" and "faces" feedback systems
@@ -187,7 +187,7 @@ with col2 :
 
                 # Record the feedback with the formulated feedback type string and optional comment
                 feedback_record = client2.create_feedback(
-                    run_id,
+                    run_id_2,
                     feedback_type_str,
                     score=score,
                     comment=feedback_2.get("text"),
