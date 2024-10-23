@@ -116,7 +116,7 @@ def validate(state):
         return "end"
     
     
-def comment(state):
+def comment_node(state):
     """
     generates comment of why the explanation doesn't match the test report.
 
@@ -196,7 +196,7 @@ class GraphState(TypedDict):
 workflow = StateGraph(GraphState)
  
 # Define the nodes
-workflow.add_node("comment", comment)  
+workflow.add_node("comment_node", comment_node)  
 workflow.add_node("generate_new",generate_new)
 # Build graph
 
