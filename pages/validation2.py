@@ -53,7 +53,7 @@ if uploaded_file:
             output_text += f"Patient: {patient_name[0]} (Chart No: {patient_name[1]})\n"
             st.write(output_text)
             for _, row in patient_data.iterrows():
-                print(row['외부결과'], row['서술결과'])
+                st.write(row['외부결과'], row['서술결과'])
                 """
                 result = validation_chain.invoke(row['외부결과'], row['서술결과'])
                 
