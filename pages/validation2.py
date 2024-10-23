@@ -32,6 +32,7 @@ if uploaded_file:
         output_text = ""
         # Load the uploaded Excel file into a DataFrame
         df = pd.read_excel(uploaded_file)
+        df = df.replace({'_x000D_\n': '\n'}, regex=True)
         
         # Filter rows where 'type' is 2
         filtered_df = df[df['type'] == 2]
@@ -52,10 +53,8 @@ if uploaded_file:
         # Group by patient and iterate through their tests
         
         for patient_name, patient_data in filtered_df.groupby(['성명', '챠트번호']):
-            output_text += f"{patient_name[0]}            {patient_name[1]})\n"
+            output_text += f"{patient_name[0]}    {patient_name[1]})\n"
             for _, row in patient_data.iterrows():
-                output_text += row['검사명칭'] + "\n"
-                
                 result = validation_chain.invoke({"test_report" : row['외부결과'], "explanation" : row['서술결과']})
                 print(result)
                 if 'comment' in result and 'new_explanation' in result:
@@ -72,7 +71,7 @@ if uploaded_file:
     # Step 3: Display final results in the Streamlit ap
     if processed ==True :
         if output_text is not "":
-            st.write(output_text)
+            st.text(output_text)
             st.download_button(
                 label="Download Patient Results",
                 data=output_text,
