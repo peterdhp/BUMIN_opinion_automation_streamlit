@@ -57,7 +57,7 @@ if uploaded_file:
                 output_text += row['검사명칭'] + "\n"
                 
                 result = validation_chain.invoke(row['외부결과'], row['서술결과'])
-                
+                print(result)
                 if 'comment' in result and 'new_explanation' in result:
                     output_text += f"{row.get('검사명칭', 'Unknown Test')} - {result['comment']}\n{result['new_explanation']}\n"
                 elif 'comment' in result:
