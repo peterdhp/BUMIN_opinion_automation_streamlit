@@ -43,7 +43,7 @@ class MismatchComment(BaseModel):
     )
 structured_llm_commenter = llm4o.with_structured_output(MismatchComment)
 
-comment_system_prompt = """When given a explanation that does not match the test report, give a comment why it doesn't match.\n\nBe as clear and brief as possible, you can simply give 1 word as comment if that is enough but don't only give 불일치 or mismatch. Use Korean"""
+comment_system_prompt = """When given a explanation that does not match the test report, give a comment why it doesn't match.\n\nBe as clear and brief as possible. Maximum of 10 words. Use Korean"""
 comment_prompt = ChatPromptTemplate.from_messages(
     [
         ("system", comment_system_prompt),
@@ -53,14 +53,14 @@ comment_prompt = ChatPromptTemplate.from_messages(
 commenter = comment_prompt | structured_llm_commenter
 
 class CommentType(BaseModel):
-    """Class of the comment which is one of the following. 'f/u period', 'biopsy results','both' and 'other'"""
+    """Class of the comment which is one of the following. 'f/u period', 'missing biopsy results','both' and 'other'"""
 
     comment_class: str = Field(
-        description="Class of comment. 'f/u period', 'biopsy results', 'both' or 'other'."
+        description="Class of comment. 'f/u period', 'missing biopsy results', 'both' or 'other'."
     )
 structured_llm_comment_classifier = llm4omini.with_structured_output(CommentType)
 
-commenttype_system_prompt = """When given a comment classify the comment into three categories. 'f/u period', 'biopsy results', or 'other'. \n\n 'f/u period' means that the comment is only related to the follow-up period.\n\n'biopsy results' means that the comment is only related to the biopsy results.\n\n'both' means that the comment is related to to biopsy results and follow-up period only. \n\n 'other' means that the comment is not related to the follow-up period or biopsy results.\n\n"""
+commenttype_system_prompt = """When given a comment classify the comment into three categories. 'f/u period', 'missing biopsy results', or 'other'. \n\n 'f/u period' means that the comment is only related to the follow-up period.\n\n'missing biopsy results' means that the comment is only related to the biopsy results.\n\n'both' means that the comment is related to missing biopsy results and follow-up period only. \n\n 'other' means that the comment is not related to the follow-up period or biopsy results.\n\n"""
 comment_type_prompt = ChatPromptTemplate.from_messages(
     [
         ("system", commenttype_system_prompt),
@@ -78,7 +78,7 @@ class FixedExplanation(BaseModel):
     )
 structured_llm_explanation_fixer = llm4o.with_structured_output(FixedExplanation)
 
-explanation_fixer_system_prompt = """Test report and an prewritten explanation about the test report with a comment, rewrite the explanation based on the comment and test report. Though try to keep a similiar tone and format"""
+explanation_fixer_system_prompt = """Test report and an prewritten explanation about the test report with a comment, rewrite the explanation in Korean based on the comment and test report. Though try to keep a similiar tone and format"""
 explanation_fixer_prompt = ChatPromptTemplate.from_messages(
     [
         ("system", explanation_fixer_system_prompt),
