@@ -212,11 +212,11 @@ workflow.add_conditional_edges(
     "comment",
     comment_type,
     {
-        "generate": "generate",
+        "generate": "generate_new",
         "end": END
     },
 )
-workflow.add_edge("generate", END)
+workflow.add_edge("generate_new", END)
 # Compile
 validation = workflow.compile()
 
