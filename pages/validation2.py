@@ -37,7 +37,7 @@ if uploaded_file:
         filtered_df = df[df['type'] == 2]
         patient_chart_number = 332655  # Replace with the chart number of the patient you want to test
         filtered_df = filtered_df[filtered_df['챠트번호'] == patient_chart_number]
-        st.table(filtered_df)
+        
 
         # Filter out rows with '검사명칭' matching the given values
         excluded_tests = ['체성분분석검사', '심전도검사', '동맥경화검사', '안저검사', '골밀도검사(spine)',
@@ -45,20 +45,17 @@ if uploaded_file:
         
         # Assuming '검사명칭' is one of the columns. We need to filter based on that.
         filtered_df = filtered_df[~filtered_df['검사명칭'].isin(excluded_tests)]
-        st.table(filtered_df)
         # Filter for a specific patient using their '챠트번호'
         
         ''''''
 
         # Group by patient and iterate through their tests
-        output_text += 'hi'
         
         for patient_name, patient_data in filtered_df.groupby(['성명', '챠트번호']):
-            output_text += 'hello'
-            output_text += f"Patient: {patient_name[0]} (Chart No: {patient_name[1]})\n"
+            output_text += f"{patient_name[0]}            {patient_name[1]})\n"
             for _, row in patient_data.iterrows():
                 output_text += row['검사명칭'] + "\n"
-                """
+                
                 result = validation_chain.invoke(row['외부결과'], row['서술결과'])
                 
                 if 'comment' in result and 'new_explanation' in result:
@@ -67,9 +64,9 @@ if uploaded_file:
                     output_text += f"{row.get('검사명칭', 'Unknown Test')} - {result['comment']}\n"
                 else:
                     output_text += f"{row.get('검사명칭', 'Unknown Test')} - 소견 일치\n"
-                """
+                
             # Separator between different patients
-            output_text += "---------------------\n"
+            output_text += "-------------------------------------------\n"
         processed =True
 
     # Step 3: Display final results in the Streamlit ap
