@@ -66,10 +66,12 @@ if uploaded_file:
                 
                 # Feed concatenated results into the custom function
                 result = validation_chain.invoke({"test_report" : combined_external_result, "explanation" : combined_narrative_result})
-                if 'new_explanation' in result:
+                if 'comment' in result and 'new_explanation' in result:
                     output_text += f"유방초음파검사 + 유방X선검사 - {result['comment']}\n{result['new_explanation']}\n"
-                else:
+                elif 'comment' in result:
                     output_text += f"유방초음파검사 + 유방X선검사 - {result['comment']}\n"
+                else:
+                    output_text += f"유방초음파검사 + 유방X선검사 - 소견 일치\n"
             
             else:
                 # Process normally for other tests of the patient
