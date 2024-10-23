@@ -74,7 +74,7 @@ if uploaded_file:
             else:
                 # Process normally for other tests of the patient
                 for _, row in patient_data.iterrows():
-                    result = validation_chain.invoke({"test_report" : combined_external_result, "explanation" : combined_narrative_result})
+                    result = validation_chain.invoke({"test_report" : row['외부결과'], "explanation" : row['서술결과']})
                     
                     if 'comment' in result and 'new_explanation' in result:
                         output_text += f"{row.get('검사명칭', 'Unknown Test')} - {result['comment']}\n{result['new_explanation']}\n"
