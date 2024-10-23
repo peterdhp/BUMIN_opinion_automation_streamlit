@@ -26,7 +26,7 @@ def authenticated_menu():
         st.sidebar.page_link("pages/consultation_chatbot.py", label="검진 결과 상담하기")    
     #st.sidebar.write(st.session_state)
     
-    st.sidebar.page_link("pages/validation2.py", label="validation")
+    st.sidebar.page_link("pages/validation2.py", label="validation_2")
 
 def unauthenticated_menu():
     # Show a navigation menu for unauthenticated users
