@@ -27,8 +27,9 @@ if openai_api_key == 'bumin':
 uploaded_file = st.file_uploader("Upload your Excel file", type=['xlsx'])
 
 if uploaded_file:
-    output_text = ""
+    
     if processed == False:
+        output_text = ""
         # Load the uploaded Excel file into a DataFrame
         df = pd.read_excel(uploaded_file)
 
