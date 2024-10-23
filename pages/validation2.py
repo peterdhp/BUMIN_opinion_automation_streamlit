@@ -32,25 +32,26 @@ if uploaded_file:
         output_text = ""
         # Load the uploaded Excel file into a DataFrame
         df = pd.read_excel(uploaded_file)
-
+        
         # Filter rows where 'type' is 2
         filtered_df = df[df['type'] == 2]
+        patient_chart_number = '00332655'  # Replace with the chart number of the patient you want to test
+        filtered_df = filtered_df[filtered_df['챠트번호'] == patient_chart_number]
+        st.table(filtered_df)
 
         # Filter out rows with '검사명칭' matching the given values
         excluded_tests = ['체성분분석검사', '심전도검사', '동맥경화검사', '안저검사', '골밀도검사(spine)',
                         '선헬스케어 동의서', '어떠케어 동의서', '에임메드 동의서','비플러스케어(becare) 동의서','케어링크 동의서+신분증사본']
-        st.table(filtered_df)
+        
         # Assuming '검사명칭' is one of the columns. We need to filter based on that.
         filtered_df = filtered_df[~filtered_df['검사명칭'].isin(excluded_tests)]
         st.table(filtered_df)
         # Filter for a specific patient using their '챠트번호'
-        patient_chart_number = '00332655'  # Replace with the chart number of the patient you want to test
-        filtered_df = filtered_df[filtered_df['챠트번호'] == patient_chart_number]
+        
         ''''''
 
         # Group by patient and iterate through their tests
         output_text += 'hi'
-        st.table(filtered_df)
         
         for patient_name, patient_data in filtered_df.groupby(['성명', '챠트번호']):
             output_text += 'hello'
