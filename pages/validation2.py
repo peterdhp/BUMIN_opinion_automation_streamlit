@@ -50,6 +50,7 @@ if uploaded_file:
 
         # Group by patient and iterate through their tests
         output_text += 'hi'
+        st.table(filtered_df)
         
         for patient_name, patient_data in filtered_df.groupby(['성명', '챠트번호']):
             output_text += 'hello'
