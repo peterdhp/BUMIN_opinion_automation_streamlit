@@ -49,6 +49,7 @@ if uploaded_file:
         ''''''
 
         # Group by patient and iterate through their tests
+        output_text += 'hi'
         
         for patient_name, patient_data in filtered_df.groupby(['성명', '챠트번호']):
             output_text += f"Patient: {patient_name[0]} (Chart No: {patient_name[1]})\n"
