@@ -10,9 +10,9 @@ import os
 from validation_engine import validation as validation_chain
 
 os.environ["LANGCHAIN_API_KEY"] = st.secrets['LANGCHAIN_API_KEY']
-os.environ["LANGCHAIN_TRACING_V2"] = st.secrets['LANGCHAIN_TRACING_V2']
-os.environ["LANGCHAIN_ENDPOINT"] = st.secrets['LANGCHAIN_ENDPOINT']
-os.environ['LANGCHAIN_PROJECT'] = st.secrets['LANGCHAIN_PROJECT']
+#os.environ["LANGCHAIN_TRACING_V2"] = st.secrets['LANGCHAIN_TRACING_V2']
+#os.environ["LANGCHAIN_ENDPOINT"] = st.secrets['LANGCHAIN_ENDPOINT']
+#os.environ['LANGCHAIN_PROJECT'] = st.secrets['LANGCHAIN_PROJECT']
 
 
 
@@ -41,7 +41,7 @@ if uploaded_file:
         
 
         # Filter out rows with '검사명칭' matching the given values
-        excluded_tests = ['체성분분석검사', '심전도검사', '동맥경화검사', '안저검사', '골밀도검사(spine)', '스트레스검사','흉부X선(1차)','유전자검사',
+        excluded_tests = ['체성분분석검사', '심전도검사', '동맥경화검사', '안저검사', '골밀도검사(spine)', '스트레스검사','흉부X선(1차)','유전자검사', '심장초음파'
                         '선헬스케어 동의서', '어떠케어 동의서', '에임메드 동의서','비플러스케어(becare) 동의서','케어링크 동의서+신분증사본','DHAT','위조직검사','위조직검사1~3개']
         
         # Assuming '검사명칭' is one of the columns. We need to filter based on that.
