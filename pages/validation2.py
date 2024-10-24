@@ -18,7 +18,8 @@ os.environ["LANGCHAIN_API_KEY"] = st.secrets['LANGCHAIN_API_KEY']
 
 menu_with_redirect()
 st.title('Validation')
-processed = False
+if "processed" not in st.session_state :
+    st.session_state.processed = False
 
 openai_api_key = st.sidebar.text_input('OpenAI API Key', value='', type='password')
 if openai_api_key == 'bumin':
@@ -28,7 +29,7 @@ uploaded_file = st.file_uploader("Upload your Excel file", type=['xlsx'])
 
 if uploaded_file:
     
-    if processed == False:
+    if st.session_state.processed == False:
         output_text = ""
         # Load the uploaded Excel file into a DataFrame
         df = pd.read_excel(uploaded_file)
@@ -87,10 +88,10 @@ if uploaded_file:
             
             # Separator between different patients
             output_text += "-------------------------------------------\n"
-        processed =True
+        st.session_state.processed =True
 
     # Step 3: Display final results in the Streamlit ap
-    if processed ==True :
+    if st.session_state.processed ==True :
         if output_text is not "":
             st.text(output_text)
             st.download_button(
