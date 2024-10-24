@@ -20,6 +20,8 @@ menu_with_redirect()
 st.title('Validation')
 if "processed" not in st.session_state :
     st.session_state.processed = False
+if "output_text" not in st.session_state :
+    st.session_state.output_text = ""
 
 openai_api_key = st.sidebar.text_input('OpenAI API Key', value='', type='password')
 if openai_api_key == 'bumin':
@@ -30,7 +32,7 @@ uploaded_file = st.file_uploader("Upload your Excel file", type=['xlsx'])
 if uploaded_file:
     
     if st.session_state.processed == False:
-        output_text = ""
+        st.session_state.output_text = ""
         # Load the uploaded Excel file into a DataFrame
         df = pd.read_excel(uploaded_file)
         df = df.replace({'_x000D_\n': '\n'}, regex=True)
@@ -54,7 +56,7 @@ if uploaded_file:
         # Group by patient and iterate through their tests
         
         for patient_name, patient_data in filtered_df.groupby(['성명', '챠트번호']):
-            output_text += f"{patient_name[0]}    {patient_name[1]}\n"
+            st.session_state.output_text += f"{patient_name[0]}    {patient_name[1]}\n"
             
             has_ultrasound = '유방초음파검사' in patient_data['검사명칭'].values
             has_xray = '유방X선검사' in patient_data['검사명칭'].values  
@@ -71,22 +73,22 @@ if uploaded_file:
                 # Feed concatenated results into the custom function
                 result = validation_chain.invoke({"test_report" : combined_external_result, "explanation" : combined_narrative_result})
                 if 'comment' in result and 'new_explanation' in result:
-                    output_text += f"유방초음파검사 + 유방X선검사 - {result['comment']}\n{result['new_explanation']}\n"
+                    st.session_state.output_text += f"유방초음파검사 + 유방X선검사 - {result['comment']}\n{result['new_explanation']}\n"
                 elif 'comment' in result:
-                    output_text += f"유방초음파검사 + 유방X선검사 - {result['comment']}\n"
+                    st.session_state.output_text += f"유방초음파검사 + 유방X선검사 - {result['comment']}\n"
                 else:
-                    output_text += f"유방초음파검사 + 유방X선검사 - 소견 일치\n"
+                    st.session_state.output_text += f"유방초음파검사 + 유방X선검사 - 소견 일치\n"
                     
             elif has_ultrasound or has_xray:
                 for _, row in patient_data[patient_data['검사명칭'].isin(['유방초음파검사', '유방X선검사'])].iterrows():
                     result = validation_chain.invoke({"test_report" : row['외부결과'], "explanation" : row['서술결과']})
                     
                     if 'comment' in result and 'new_explanation' in result:
-                        output_text += f"{row.get('검사명칭', 'Unknown Test')} - {result['comment']}\n{result['new_explanation']}\n"
+                        st.session_state.output_text += f"{row.get('검사명칭', 'Unknown Test')} - {result['comment']}\n{result['new_explanation']}\n"
                     elif 'comment' in result:
-                        output_text += f"{row.get('검사명칭', 'Unknown Test')} - {result['comment']}\n"
+                        st.session_state.output_text += f"{row.get('검사명칭', 'Unknown Test')} - {result['comment']}\n"
                     else:
-                        output_text += f"{row.get('검사명칭', 'Unknown Test')} - 소견 일치\n"
+                        st.session_state.output_text += f"{row.get('검사명칭', 'Unknown Test')} - 소견 일치\n"
             
             
                 # Process normally for other tests of the patient
@@ -94,23 +96,23 @@ if uploaded_file:
                 result = validation_chain.invoke({"test_report" : row['외부결과'], "explanation" : row['서술결과']})
                 
                 if 'comment' in result and 'new_explanation' in result:
-                    output_text += f"{row.get('검사명칭', 'Unknown Test')} - {result['comment']}\n{result['new_explanation']}\n"
+                    st.session_state.output_text += f"{row.get('검사명칭', 'Unknown Test')} - {result['comment']}\n{result['new_explanation']}\n"
                 elif 'comment' in result:
-                    output_text += f"{row.get('검사명칭', 'Unknown Test')} - {result['comment']}\n"
+                    st.session_state.output_text += f"{row.get('검사명칭', 'Unknown Test')} - {result['comment']}\n"
                 else:
-                    output_text += f"{row.get('검사명칭', 'Unknown Test')} - 소견 일치\n"
+                    st.session_state.output_text += f"{row.get('검사명칭', 'Unknown Test')} - 소견 일치\n"
             
             # Separator between different patients
-            output_text += "-------------------------------------------\n"
+            st.session_state.output_text += "-------------------------------------------\n"
         st.session_state.processed =True
 
     # Step 3: Display final results in the Streamlit ap
     if st.session_state.processed ==True :
-        if output_text is not "":
-            st.text(output_text)
+        if st.session_state.output_text is not "":
+            st.text(st.session_state.output_text)
             st.download_button(
                 label="Download Patient Results",
-                data=output_text,
+                data=st.session_state.output_text,
                 file_name='patient_results_single_patient.txt',
                 mime='text/plain'
             )
