@@ -54,10 +54,13 @@ if uploaded_file:
         # Group by patient and iterate through their tests
         
         for patient_name, patient_data in filtered_df.groupby(['성명', '챠트번호']):
-            output_text += f"{patient_name[0]}    {patient_name[1]})\n"  
+            output_text += f"{patient_name[0]}    {patient_name[1]}\n"
+            
+            has_ultrasound = '유방초음파검사' in patient_data['검사명칭'].values
+            has_xray = '유방X선검사' in patient_data['검사명칭'].values  
                 
-            if all(test in patient_data['검사명칭'].values for test in ['유방초음파검사', '유방X선검사']):
-                # Concatenate the results for '외부결과' and '서술결과' for both tests
+            if has_ultrasound and has_xray:
+        # Concatenate the results for '외부결과' and '서술결과' for both tests
                 combined_external_result = ''
                 combined_narrative_result = ''
                 
@@ -73,10 +76,9 @@ if uploaded_file:
                     output_text += f"유방초음파검사 + 유방X선검사 - {result['comment']}\n"
                 else:
                     output_text += f"유방초음파검사 + 유방X선검사 - 소견 일치\n"
-            
-            else:
-                # Process normally for other tests of the patient
-                for _, row in patient_data.iterrows():
+                    
+            elif has_ultrasound or has_xray:
+                for _, row in patient_data[patient_data['검사명칭'].isin(['유방초음파검사', '유방X선검사'])].iterrows():
                     result = validation_chain.invoke({"test_report" : row['외부결과'], "explanation" : row['서술결과']})
                     
                     if 'comment' in result and 'new_explanation' in result:
@@ -85,6 +87,18 @@ if uploaded_file:
                         output_text += f"{row.get('검사명칭', 'Unknown Test')} - {result['comment']}\n"
                     else:
                         output_text += f"{row.get('검사명칭', 'Unknown Test')} - 소견 일치\n"
+            
+            
+                # Process normally for other tests of the patient
+            for _, row in patient_data[~patient_data['검사명칭'].isin(['유방초음파검사', '유방X선검사'])].iterrows():
+                result = validation_chain.invoke({"test_report" : row['외부결과'], "explanation" : row['서술결과']})
+                
+                if 'comment' in result and 'new_explanation' in result:
+                    output_text += f"{row.get('검사명칭', 'Unknown Test')} - {result['comment']}\n{result['new_explanation']}\n"
+                elif 'comment' in result:
+                    output_text += f"{row.get('검사명칭', 'Unknown Test')} - {result['comment']}\n"
+                else:
+                    output_text += f"{row.get('검사명칭', 'Unknown Test')} - 소견 일치\n"
             
             # Separator between different patients
             output_text += "-------------------------------------------\n"

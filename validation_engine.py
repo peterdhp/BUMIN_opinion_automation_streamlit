@@ -78,7 +78,7 @@ class FixedExplanation(BaseModel):
     )
 structured_llm_explanation_fixer = llm4o.with_structured_output(FixedExplanation)
 
-explanation_fixer_system_prompt = """Test report and an prewritten explanation about the test report with a comment, rewrite the explanation in Korean based on the comment and test report. Though try to keep a similiar tone and format"""
+explanation_fixer_system_prompt = """Given a test report and a wrong explanation with comments explaning the error, rewrite the explanation in Korean so that it matches the test report. Try to keep a similiar tone and format"""
 explanation_fixer_prompt = ChatPromptTemplate.from_messages(
     [
         ("system", explanation_fixer_system_prompt),
