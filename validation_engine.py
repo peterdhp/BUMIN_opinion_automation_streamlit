@@ -18,14 +18,14 @@ os.environ['LANGCHAIN_PROJECT'] = st.secrets['LANGCHAIN_PROJECT']
 llm4o = ChatOpenAI(model="gpt-4o", temperature=0)
 llm4omini = ChatOpenAI(model="gpt-4o-mini", temperature=0)
 class GradeMatch(BaseModel):
-    """Binary score for whether the explanation matches the test report."""
+    """Binary score for whether the explanation is an appropriate explanation of the test report."""
 
     binary_score: str = Field(
-        description="Explanation matches the test report , 'yes' or 'no'"
+        description="Explanation is an appropriate explanation of the test report , 'yes' or 'no'"
     )
 structured_llm_grader = llm4o.with_structured_output(GradeMatch)
 
-hallucination_system_prompt = """You are a grader assessing whether an medical explantion matches the medical test report. While every positive finding MUST be mentioned in the explanation, negative findings don't necessarily have to mentioned in the explanation. \n\nGive a binary score 'yes' or 'no'. 'yes' means that the explanation matches the test report.\n\nBe sensitive, especially about important positive findings. If you are not sure output 'no'"""
+hallucination_system_prompt = """You are a grader assessing whether the explantion is an appropiate explanation of the medical test report. Every positive finding MUST be mentioned in the explanation but negative findings don't necessarily have to mentioned in the explanation. \n\nGive a binary score 'yes' or 'no'. 'yes' means that the explanation is an appropriate explanation of the test report.\n\nBe sensitive, especially about important positive findings. If you are not sure output 'no'"""
 hallucination_prompt = ChatPromptTemplate.from_messages(
     [
         ("system", hallucination_system_prompt),
