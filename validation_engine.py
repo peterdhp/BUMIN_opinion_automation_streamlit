@@ -25,7 +25,7 @@ class GradeMatch(BaseModel):
     )
 structured_llm_grader = llm4o.with_structured_output(GradeMatch)
 
-hallucination_system_prompt = """You are a grader assessing whether an explantion matches the test report. While every positive finding MUST be mentioned in the explanation, negative findings don't necessarily have to mentioned in the explanation. In other words have high Sensitivity rather than high Specificity.\n\nGive a binary score 'yes' or 'no'. 'yes' means that the explanation matches the test report.\n\nBe sensitive about important positive findings. If you are not sure output 'no'"""
+hallucination_system_prompt = """You are a grader assessing whether an medical explantion matches the medical test report. While every positive finding MUST be mentioned in the explanation, negative findings don't necessarily have to mentioned in the explanation. \n\nGive a binary score 'yes' or 'no'. 'yes' means that the explanation matches the test report.\n\nBe sensitive, especially about important positive findings. If you are not sure output 'no'"""
 hallucination_prompt = ChatPromptTemplate.from_messages(
     [
         ("system", hallucination_system_prompt),
