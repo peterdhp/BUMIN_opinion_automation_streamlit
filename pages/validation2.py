@@ -96,7 +96,7 @@ if uploaded_file:
                 result = validation_chain.invoke({"test_report" : row['외부결과'], "explanation" : row['서술결과']})
                 
                 if 'comment' in result and 'new_explanation' in result:
-                    st.session_state.output_text += f"{row.get('검사명칭', 'Unknown Test')} - {result['comment']}\n{result['new_explanation']}\n"
+                    st.session_state.output_text += f"{row.get('검사명칭', 'Unknown Test')} - {result['comment']}\n{result['new_explanation']}\n\n"
                 elif 'comment' in result:
                     st.session_state.output_text += f"{row.get('검사명칭', 'Unknown Test')} - {result['comment']}\n"
                 else:
