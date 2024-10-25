@@ -30,6 +30,7 @@ hallucination_system_prompt = """You are a grader assessing whether the explanti
 Here are some additional rules:
 - Different gastritis will be explained as simply gastritis
 - BIRAD or KIRAD will be explained in a narrative way instead of stating the score.
+- RE is 역류성 식도염 in endoscopy
 """
 hallucination_prompt = ChatPromptTemplate.from_messages(
     [
