@@ -40,6 +40,7 @@ if uploaded_file:
         
         # Filter rows where 'type' is 2
         filtered_df = df[df['type'] == 2]
+        filtered_df = filtered_df[~(filtered_df['검사결과'].isna() & filtered_df['외부결과'].isna())]
         #patient_chart_number = 332655  # Replace with the chart number of the patient you want to test
         #filtered_df = filtered_df[filtered_df['챠트번호'] == patient_chart_number]
         
