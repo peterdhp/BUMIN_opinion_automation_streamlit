@@ -36,7 +36,7 @@ if uploaded_file:
         # Load the uploaded Excel file into a DataFrame
         df = pd.read_excel(uploaded_file)
         df = df.replace({'_x000D_\n': '\n'}, regex=True)
-        df = df.replace({'?': ''}, regex=True)
+        df = df.replace({'\\?': ''}, regex=True)
         
         # Filter rows where 'type' is 2
         filtered_df = df[df['type'] == 2]
