@@ -32,7 +32,8 @@ Here are some additional rules:
 - BIRAD or KIRAD will be explained in a narrative way instead of stating the score.
 - RE is 역류성 식도염 in endoscopy
 - limited examination should be mentioned.
-- when results contain, clinical correlation or check lab results they should be graded no.
+- When the explanantion mentions biopsy results, grade no.
+- When results recommends to check clinical correlation or check lab results, grade no.
 """
 hallucination_prompt = ChatPromptTemplate.from_messages(
     [
