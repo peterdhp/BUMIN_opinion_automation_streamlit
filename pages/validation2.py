@@ -39,7 +39,7 @@ if uploaded_file:
         df = df.replace({'\\?': ''}, regex=True)
         
         # Filter rows where 'type' is 2
-        filtered_df = df[df['type'] == 2]
+        filtered_df = df[(df['type'] == 2) | (df['검사명칭'].isin(['유리갑상선호르몬(Free T4)', '갑상선자극호르몬(TSH)']))]
         filtered_df = filtered_df[~(filtered_df['검사결과'].isna() & filtered_df['외부결과'].isna())]
         #patient_chart_number = 332655  # Replace with the chart number of the patient you want to test
         #filtered_df = filtered_df[filtered_df['챠트번호'] == patient_chart_number]
@@ -62,6 +62,8 @@ if uploaded_file:
             
             has_ultrasound = '유방초음파검사' in patient_data['검사명칭'].values
             has_xray = '유방X선검사' in patient_data['검사명칭'].values  
+            has_thyroid= '갑상선초음파' in patient_data['검사명칭'].values
+            has_TFT = '유리갑상선호르몬(Free T4)' in patient_data['검사명칭'].values
                 
             if has_ultrasound and has_xray:
         # Concatenate the results for '외부결과' and '서술결과' for both tests
@@ -81,20 +83,32 @@ if uploaded_file:
                 else:
                     st.session_state.output_text += f"유방초음파검사 + 유방X선검사 - 소견 일치\n"
                     
-            elif has_ultrasound or has_xray:
-                for _, row in patient_data[patient_data['검사명칭'].isin(['유방초음파검사', '유방X선검사'])].iterrows():
-                    result = validation_chain.invoke({"test_report" : row['외부결과'], "explanation" : row['서술결과']})
+                patient_data = patient_data[~patient_data['검사명칭'].isin(['유방초음파', '유방x선검사'])]
+                
                     
-                    if 'comment' in result and 'new_explanation' in result:
-                        st.session_state.output_text += f"{row.get('검사명칭', 'Unknown Test')} - {result['comment']}\n{result['new_explanation']}\n"
-                    elif 'comment' in result:
-                        st.session_state.output_text += f"{row.get('검사명칭', 'Unknown Test')} - {result['comment']}\n"
-                    else:
-                        st.session_state.output_text += f"{row.get('검사명칭', 'Unknown Test')} - 소견 일치\n"
             
+            if has_thyroid and has_TFT:
+                US_row = patient_data[patient_data['검사명칭'].isin(['갑상선초음파'])].iloc[0]
+                FT4_value = patient_data[patient_data['검사명칭'].isin('유리갑상선호르몬(Free T4)')].iloc[0]['검사결과']
+                TSH_value = patient_data[patient_data['검사명칭'].isin('갑상선자극호르몬(TSH)')].iloc[0]['검사결과']
+                combined_narrative_result = US_row['서술결과']
+                combined_external_result = US_row['외부결과'] + f"\n\n Free T4 : {FT4_value} (Normal value : 0.92~1.68)  TSH : {TSH_value} (Normal value : 0.27~4.20)"
+                    
+                result = validation_chain.invoke({"test_report" : combined_external_result, "explanation" : combined_narrative_result})
+                if 'comment' in result and 'new_explanation' in result:
+                    st.session_state.output_text += f"갑상선초음파 - {result['comment']}\n{result['new_explanation']}\n"
+                elif 'comment' in result:
+                    st.session_state.output_text += f"갑상선초음파 - {result['comment']}\n"
+                else:
+                    st.session_state.output_text += f"갑상선초음파 - 소견 일치\n"
+                    
+                patient_data = patient_data[~patient_data['검사명칭'].isin(['갑상선초음파', '유리갑상선호르몬(Free T4)','갑상선자극호르몬(TSH)'])]
+            else :
+                patient_data = patient_data[~patient_data['검사명칭'].isin(['유리갑상선호르몬(Free T4)','갑상선자극호르몬(TSH)'])]
+                    
             
                 # Process normally for other tests of the patient
-            for _, row in patient_data[~patient_data['검사명칭'].isin(['유방초음파검사', '유방X선검사'])].iterrows():
+            for _, row in patient_data.iterrows():
                 result = validation_chain.invoke({"test_report" : row['외부결과'], "explanation" : row['서술결과']})
                 
                 if 'comment' in result and 'new_explanation' in result:
