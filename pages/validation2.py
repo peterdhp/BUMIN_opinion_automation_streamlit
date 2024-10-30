@@ -7,7 +7,7 @@ from pydantic import BaseModel, Field
 from io import BytesIO
 from menu_streamlit import menu_with_redirect
 import os
-from validation_engine import validation as validation_chain
+from validation_engine_2 import validation as validation_chain
 
 os.environ["LANGCHAIN_API_KEY"] = st.secrets['LANGCHAIN_API_KEY']
 #os.environ["LANGCHAIN_TRACING_V2"] = st.secrets['LANGCHAIN_TRACING_V2']
