@@ -259,9 +259,9 @@ def nofindings_check(state):
         str: Binary decision for next node to call
     """
 
-    test_report = state["test_report"]
+    explanation = state["explanation"]
     
-    response = nofindings_checker.invoke({'report': test_report})
+    response = nofindings_checker.invoke({'explanation': explanation})
     
     list = response.AnomalyList
     list_string = ', '.join(list)
