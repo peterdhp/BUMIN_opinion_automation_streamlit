@@ -88,7 +88,7 @@ if uploaded_file:
                     
             
             if has_thyroid and has_TFT:
-                US_row = patient_data[patient_data['검사명칭']==['갑상선초음파']].iloc[0]
+                US_row = patient_data[patient_data['검사명칭']=='갑상선초음파'].iloc[0]
                 FT4_value = patient_data[patient_data['검사명칭']=='유리갑상선호르몬(Free T4)'].iloc[0]['검사결과']
                 TSH_value = patient_data[patient_data['검사명칭']=='갑상선자극호르몬(TSH)'].iloc[0]['검사결과']
                 combined_narrative_result = US_row['서술결과']
