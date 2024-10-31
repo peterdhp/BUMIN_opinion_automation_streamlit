@@ -50,9 +50,9 @@ class CheckLimited(BaseModel):
     binary_score: str = Field(
         description="Whether the narrative explanation of a medical test correctly acknowledged any 'limitated evaluation' in the test’s evaluation, 'yes' or 'no'"
     )
-structured_limitCheck = llm4omini.with_structured_output(CheckLimited)
+structured_limitCheck = llm4o.with_structured_output(CheckLimited)
 
-limitChecker_system_prompt = """You are a reviewer assessing a narrative explanation of a medical test. When the test report mentions 'limited evaluation', the explanation should mention '제한된 검사' it too. If it didn't, say 'no'. Otherwise say 'yes'."""
+limitChecker_system_prompt = """You are a reviewer assessing a narrative explanation of a medical test. When the test report mentions 'limited evaluation', the explanation should mention '제한된 검사'. If it didn't, say 'no'. Otherwise say 'yes'."""
 limitChecker_prompt = ChatPromptTemplate.from_messages(
     [
         ("system", limitChecker_system_prompt),
