@@ -283,10 +283,10 @@ def mention_check(state):
         str: Binary decision for next node to call
     """
 
-    test_report = state["test_report"]
+    findings = state["anomalies"]
     explanation = state["explanation"]
     
-    response = mention_checker.invoke({'report': test_report, 'explanation' : explanation})
+    response = mention_checker.invoke({'findings': findings, 'explanation' : explanation})
     
     list = response.MissedFindings
     list_string = ', '.join(list)
