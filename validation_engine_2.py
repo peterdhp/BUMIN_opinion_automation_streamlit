@@ -141,6 +141,23 @@ explanationChecker_prompt = ChatPromptTemplate.from_messages(
 explanation_checker = explanationChecker_prompt | structured_explanationChecker
 
 
+class CommentType(BaseModel):
+    """Class of the comment which is one of the following. 'f/u period'  and 'other'"""
+
+    comment_class: str = Field(
+        description="Class of comment. 'f/u period' or 'other'."
+    )
+structured_llm_comment_classifier = llm4omini.with_structured_output(CommentType)
+
+commenttype_system_prompt = """ㅎiven a comment, classify the comment into two categories. 'f/u period' or 'other'. \n\n 'f/u period' means that the comment is only related with the follow-up period. 'other' means that the comment is not related to the follow-up period.\n\n"""
+comment_type_prompt = ChatPromptTemplate.from_messages(
+    [
+        ("system", commenttype_system_prompt),
+        ("human", "Comment: {comment}"),
+    ]
+)
+comment_classifier = comment_type_prompt | structured_llm_comment_classifier
+
 
 
 class FixedExplanation(BaseModel):
@@ -319,7 +336,25 @@ def explanation_check(state):
     else:
         return {'comment': '소견에 의학적인 오류가 있음'}
     
- 
+def comment_type(state):
+    """
+    Classifies the comment of why the explanation doesn't match the test report.
+
+    Args:
+        state (dict): The current graph state
+
+    Returns:
+        str: Binary decision for next node to call
+    """
+    comment = state["comment"]
+    
+    response = comment_classifier.invoke({'comment':comment})
+    comment_class = response.comment_class
+
+    if comment_class == "other":
+        return "generate"
+    else:
+        return "end"
     
 def generate_new(state):
     """
@@ -369,6 +404,7 @@ workflow.add_node("nofindings_check", nofindings_check)
 workflow.add_node("mention_check", mention_check)  
 workflow.add_node("explanation_check", explanation_check)  
 workflow.add_node("generate_new",generate_new)
+
 # Build graph
 
 workflow.add_conditional_edges(
@@ -391,10 +427,24 @@ workflow.add_conditional_edges(
     },
 )
 
-workflow.add_edge("mention_check", "explanation_check")
-workflow.add_edge("explanation_check", "generate_new")
-workflow.add_edge("nofindings_check", "generate_new")
 
+workflow.add_edge("mention_check", "explanation_check")
+workflow.add_conditional_edges(
+    "explanation_check",
+    comment_type,
+    {
+        "generate": "generate_new",
+        "end": END
+    },
+)
+workflow.add_conditional_edges(
+    "nofindings_check",
+    comment_type,
+    {
+        "generate": "generate_new",
+        "end": END
+    },
+)
 workflow.add_edge("generate_new", END)
 # Compile
 validation = workflow.compile()
