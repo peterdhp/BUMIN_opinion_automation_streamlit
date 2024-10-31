@@ -67,7 +67,6 @@ if uploaded_file:
             has_TFT = '유리갑상선호르몬(Free T4)' in patient_data['검사명칭'].values
                 
             if has_ultrasound and has_xray:
-        # Concatenate the results for '외부결과' and '서술결과' for both tests
                 combined_external_result = ''
                 combined_narrative_result = ''
                 
@@ -87,7 +86,6 @@ if uploaded_file:
                 patient_data = patient_data[~patient_data['검사명칭'].isin(['유방초음파', '유방x선검사'])]
                 
                     
-            
             if has_thyroid and has_TFT:
                 US_row = patient_data[patient_data['검사명칭']=='갑상선초음파'].iloc[0]
                 FT4_value = patient_data[patient_data['검사명칭']=='유리갑상선호르몬(Free T4)'].iloc[0]['검사결과']
@@ -107,10 +105,9 @@ if uploaded_file:
             else :
                 patient_data = patient_data[~patient_data['검사명칭'].isin(['유리갑상선호르몬(Free T4)','갑상선자극호르몬(TSH)'])]
                     
-            
-                # Process normally for other tests of the patient
+
             for _, row in patient_data.iterrows():
-                if row['검사명칭'] in ['상부소화관 내시경 검사(수면)','상부소화관 내시경 검사(일반)','대장내시경(수면)','대장내시경(일반)']:
+                if row['검사명칭'] in ['상부소화관 내시경검사(수면)','상부소화관 내시경검사(일반)','대장내시경(수면)','대장내시경(일반)']:
                     result = validation_chain_scope.invoke({"test_report" : row['외부결과'], "explanation" : row['서술결과']})
                 else: 
                     result = validation_chain.invoke({"test_report" : row['외부결과'], "explanation" : row['서술결과']})
