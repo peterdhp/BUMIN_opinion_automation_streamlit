@@ -31,9 +31,9 @@ Here are some additional rules:
 - Different gastritis will be explained as simply gastritis
 - BIRAD or KIRAD will be explained in a narrative way instead of stating the score.
 - RE is 역류성 식도염 and CSG is 표재성 위염 in endoscopy
-- limited examination should be mentioned.
+- limited evaluatation of the test must be mentioned.
 - When the explanantion mentions biopsy results, grade no.
-- When results recommends to check clinical correlation or check lab results, grade no.
+- When results recommend to check clinical correlation or check lab results, grade no.
 """
 hallucination_prompt = ChatPromptTemplate.from_messages(
     [
