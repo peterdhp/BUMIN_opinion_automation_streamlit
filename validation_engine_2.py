@@ -52,7 +52,7 @@ class CheckLimited(BaseModel):
     )
 structured_limitCheck = llm4omini.with_structured_output(CheckLimited)
 
-limitChecker_system_prompt = """You are a reviewer assessing a narrative explanation of a medical test. When the test report mentions 'limited evaluation', the explanation should mention it too. If it didn't say 'no'. Otherwise say 'yes'."""
+limitChecker_system_prompt = """You are a reviewer assessing a narrative explanation of a medical test. When the test report mentions 'limited evaluation', the explanation should mention '제한된 검사' it too. If it didn't, say 'no'. Otherwise say 'yes'."""
 limitChecker_prompt = ChatPromptTemplate.from_messages(
     [
         ("system", limitChecker_system_prompt),
