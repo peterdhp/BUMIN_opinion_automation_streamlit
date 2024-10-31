@@ -28,13 +28,9 @@ structured_llm_grader = llm4o.with_structured_output(GradeMatch)
 hallucination_system_prompt = """You are a grader assessing whether the explantion is an appropiate explanation of the medical test report. Every positive finding MUST be mentioned in the explanation but negative findings don't necessarily have to mentioned in the explanation. \n\nGive a binary score 'yes' or 'no'. 'yes' means that the explanation is an appropriate explanation of the test report.\n\nBe sensitive, especially about important positive findings. If you are not sure output 'no'
 
 Here are some additional rules:
-- Different gastritis will be explained as simply gastritis
 - BIRAD or KIRAD will be explained in a narrative way instead of stating the score.
-- RE is 역류성 식도염 and CSG is 표재성 위염 in endoscopy
 - limited evaluatation of the test must be mentioned.
-- When the explanantion mentions biopsy results, grade no.
 - When results recommend to check clinical correlation or check lab results, grade no.
-- medications used in the test don't have to be mentioned.
 - prostate volumes don't have to be mentioned.
 """
 hallucination_prompt = ChatPromptTemplate.from_messages(
@@ -44,6 +40,22 @@ hallucination_prompt = ChatPromptTemplate.from_messages(
     ]
 )
 hallucination_grader = hallucination_prompt | structured_llm_grader
+
+hallucination_system_prompt_scope = """You are a grader assessing whether the explantion is an appropiate explanation of the medical test report. Every positive finding MUST be mentioned in the explanation but negative findings don't necessarily have to mentioned in the explanation. \n\nGive a binary score 'yes' or 'no'. 'yes' means that the explanation is an appropriate explanation of the test report.\n\nBe sensitive, especially about important positive findings. If you are not sure output 'no'
+
+Here are some additional rules:
+- Different gastritis will be explained as simply gastritis
+- RE is 역류성 식도염 and CSG is 표재성 위염 in endoscopy
+- When the explanantion mentions biopsy results, grade no.
+- medications used in the test don't have to be mentioned.
+"""
+hallucination_prompt_scope = ChatPromptTemplate.from_messages(
+    [
+        ("system", hallucination_system_prompt_scope),
+        ("human", "Test Report: {report}\n\nTest Explanation: {explanation}"),
+    ]
+)
+hallucination_grader_scope = hallucination_prompt_scope | structured_llm_grader
 
 ###comment of why it is mismatching
 class MismatchComment(BaseModel):
@@ -119,6 +131,30 @@ def validate(state):
     
     
     response = hallucination_grader.invoke({'explanation':explanation, 'report': test_report})
+    validation = response.binary_score
+
+    if validation == "no":
+        return "comment"
+    else:
+        return "end"
+
+def validate_scope(state):
+    """
+    Validates whether the given explanation matches the test report.
+
+    Args:
+        state (dict): The current graph state
+
+    Returns:
+        str: Binary decision for next node to call
+    """
+
+    
+    explanation = state["explanation"]
+    test_report = state["test_report"]
+    
+    
+    response = hallucination_grader_scope.invoke({'explanation':explanation, 'report': test_report})
     validation = response.binary_score
 
     if validation == "no":
@@ -231,5 +267,33 @@ workflow.add_edge("generate_new", END)
 # Compile
 validation = workflow.compile()
 
+
+
+workflow_scope = StateGraph(GraphState)
+ 
+# Define the nodes
+workflow_scope.add_node("comment_node", comment_node)  
+workflow_scope.add_node("generate_new",generate_new)
+# Build graph
+
+workflow_scope.add_conditional_edges(
+    START,
+    validate_scope,
+    {
+        "comment": "comment_node",
+        "end": END,
+    },
+)
+workflow_scope.add_conditional_edges(
+    "comment_node",
+    comment_type,
+    {
+        "generate": "generate_new",
+        "end": END
+    },
+)
+workflow_scope.add_edge("generate_new", END)
+# Compile
+validation_scope = workflow_scope.compile()
 
     

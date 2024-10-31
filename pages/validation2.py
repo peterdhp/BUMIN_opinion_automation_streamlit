@@ -8,6 +8,7 @@ from io import BytesIO
 from menu_streamlit import menu_with_redirect
 import os
 from validation_engine import validation as validation_chain
+from validation_engine import validation_scope as validation_chain_scope
 
 os.environ["LANGCHAIN_API_KEY"] = st.secrets['LANGCHAIN_API_KEY']
 #os.environ["LANGCHAIN_TRACING_V2"] = st.secrets['LANGCHAIN_TRACING_V2']
@@ -109,7 +110,10 @@ if uploaded_file:
             
                 # Process normally for other tests of the patient
             for _, row in patient_data.iterrows():
-                result = validation_chain.invoke({"test_report" : row['외부결과'], "explanation" : row['서술결과']})
+                if row['검사명칭'] in ['상부소화관 내시경 검사(수면)','상부소화관 내시경 검사(일반)','대장내시경(수면)','대장내시경(일반)']:
+                    result = validation_chain_scope.invoke({"test_report" : row['외부결과'], "explanation" : row['서술결과']})
+                else: 
+                    result = validation_chain.invoke({"test_report" : row['외부결과'], "explanation" : row['서술결과']})
                 
                 if 'comment' in result and 'new_explanation' in result:
                     st.session_state.output_text += f"{row.get('검사명칭', 'Unknown Test')} - {result['comment']}\n{result['new_explanation']}\n\n"
