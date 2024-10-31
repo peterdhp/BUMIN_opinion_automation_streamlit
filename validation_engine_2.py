@@ -45,14 +45,14 @@ Biopsy_checker = biopsyChecker_prompt | structured_biopsyChecker
 
 
 class CheckLimited(BaseModel):
-    """binary score for whether the narrative explanation of a medical test correctly acknowledged any limitations in the test’s evaluation."""
+    """binary score for whether the narrative explanation of a medical test correctly acknowledged any 'limitated evaluation' in the test’s evaluation."""
 
     binary_score: str = Field(
-        description="Whether the narrative explanation of a medical test correctly acknowledged any limitations in the test’s evaluation, 'yes' or 'no'"
+        description="Whether the narrative explanation of a medical test correctly acknowledged any 'limitated evaluation' in the test’s evaluation, 'yes' or 'no'"
     )
 structured_limitCheck = llm4omini.with_structured_output(CheckLimited)
 
-limitChecker_system_prompt = """You are a reviewer assessing a narrative explanation of a medical test. Assign a binary score ('yes' or 'no') to determine if the narrative explanation of a medical test accurately acknowledged any limitations in the test’s evaluation."""
+limitChecker_system_prompt = """You are a reviewer assessing a narrative explanation of a medical test. When the test report mentions 'limited evaluation', the explanation should mention it too. If it didn't say 'no'. Otherwise say 'yes'."""
 limitChecker_prompt = ChatPromptTemplate.from_messages(
     [
         ("system", limitChecker_system_prompt),
