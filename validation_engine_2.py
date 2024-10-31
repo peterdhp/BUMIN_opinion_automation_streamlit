@@ -72,7 +72,7 @@ class AnomalyCheck(BaseModel):
     )
 structured_anomalyCheck = llm4o.with_structured_output(AnomalyCheck)
 
-anomalyChecker_system_prompt = """You are a medical reviewer assessing a test report. List up the positive findings or anomalities mentioned in the test report. Be aware of medical abbreviatons."""
+anomalyChecker_system_prompt = """You are a medical reviewer assessing a test report. List up the positive findings or anomalities mentioned in the test report. Please omit redundant findings that are medically equivalent to what is written in the recommendations(rec) or impressions(impt). Be aware of medical abbreviatons."""
 anomalyChecker_prompt = ChatPromptTemplate.from_messages(
     [
         ("system", anomalyChecker_system_prompt),
