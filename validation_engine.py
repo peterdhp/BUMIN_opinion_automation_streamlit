@@ -34,6 +34,8 @@ Here are some additional rules:
 - limited evaluatation of the test must be mentioned.
 - When the explanantion mentions biopsy results, grade no.
 - When results recommend to check clinical correlation or check lab results, grade no.
+- medications used in the test don't have to be mentioned.
+- prostate volumes don't have to be mentioned.
 """
 hallucination_prompt = ChatPromptTemplate.from_messages(
     [
