@@ -199,8 +199,9 @@ def limit_examination(state):
     """
 
     test_report = state["test_report"]
+    explanation = state["explanation"]
     
-    response = limit_checker.invoke({'report': test_report})
+    response = limit_checker.invoke({'report': test_report, 'explanation': explanation})
     
     if response.binary_score == "no":
         return {"comment": '제한된 검사라는 것이 올바르게 언급되지 않음      '}
