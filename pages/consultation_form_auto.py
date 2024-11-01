@@ -88,4 +88,4 @@ if uploaded_file:
         #st.write(result_rows)
         st.session_state.processed_form =True
 
-    st.text(autotemplate.response)
+    st.text(autotemplate)
