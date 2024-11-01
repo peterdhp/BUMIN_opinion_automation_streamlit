@@ -73,5 +73,5 @@ if uploaded_file:
         st.session_state.processed_form =True
 
         
-
+    st.text('결과')
     st.text(st.session_state.output_form)
