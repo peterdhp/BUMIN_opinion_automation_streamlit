@@ -82,6 +82,7 @@ if uploaded_file:
 
         # Concatenate results with line breaks
         st.session_state.output_form = "\n".join(result_rows)
+        st.write(result_rows)
         st.session_state.processed_form =True
 
         
