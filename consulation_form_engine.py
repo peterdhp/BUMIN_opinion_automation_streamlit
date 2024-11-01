@@ -155,8 +155,7 @@ class GraphState(TypedDict):
 workflow = StateGraph(GraphState)
 # Define the nodes
 
-workflow.add_node("generate", generate)  
-workflow.add_node("generate", generate)  
+workflow.add_node("generate", generate)   
 # Build graph
 
 workflow.add_edge(START, "generate")
