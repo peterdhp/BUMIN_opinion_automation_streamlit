@@ -28,7 +28,7 @@ openai_api_key = st.sidebar.text_input('OpenAI API Key', value='', type='passwor
 if openai_api_key == 'bumin':
     openai_api_key = st.secrets['OPENAI_API_KEY']
 
-uploaded_file = st.file_uploader("Upload your Excel file", type=['xlsx','xls'])
+uploaded_file = st.file_uploader("Upload your Excel file", type=['xlsx'])
 
 def is_abnormal(row):
     try:
