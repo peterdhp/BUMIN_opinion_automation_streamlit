@@ -108,7 +108,7 @@ def generate(state):
     """
     input = state["input"]
     
-    response = hallucination_grader.invoke({'test_results':input})
+    response = hallucination_grader.invoke({'report':input})
     return {"response": response}
   
     
