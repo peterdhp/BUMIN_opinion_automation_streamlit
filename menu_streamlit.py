@@ -27,6 +27,8 @@ def authenticated_menu():
     #st.sidebar.write(st.session_state)
     
     st.sidebar.page_link("pages/validation2.py", label="validation_2")
+    
+    st.sidebar.page_link("pages/consultation_form_auto.py", label="상담양식자동화")
 
 def unauthenticated_menu():
     # Show a navigation menu for unauthenticated users
