@@ -86,6 +86,6 @@ if uploaded_file:
         
         autotemplate = autoformat_chain.invoke({"input" : st.session_state.output_form})
         #st.write(result_rows)
+        
+        st.text(autotemplate)
         st.session_state.processed_form =True
-
-    st.text(autotemplate)
