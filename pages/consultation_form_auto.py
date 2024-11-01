@@ -7,8 +7,7 @@ from pydantic import BaseModel, Field
 from io import BytesIO
 from menu_streamlit import menu_with_redirect
 import os
-from validation_engine import validation as validation_chain
-from validation_engine import validation_scope as validation_chain_scope
+from consulation_form_engine import autoformat as autoformat_chain
 
 os.environ["LANGCHAIN_API_KEY"] = st.secrets['LANGCHAIN_API_KEY']
 #os.environ["LANGCHAIN_TRACING_V2"] = st.secrets['LANGCHAIN_TRACING_V2']
@@ -70,7 +69,11 @@ if uploaded_file:
         # Assuming '검사명칭' is one of the columns. We need to filter based on that.
         df = df[~df['검사명칭'].isin(excluded_tests)]
         # Filter for a specific patient using their '챠트번호'
-
+        chartnum = df['챠트번호'].iloc[0]
+        name = df['성명'].iloc[0]
+        checkup_date = df['검진일'].iloc[0]
+        first_row = chartnum + ' ' + name + ' [' + checkup_date + 'HPDP]'
+        result_rows.append(first_row)
         for _, row in df.iterrows():
             if row['type'] in [0, 1] and is_abnormal(row):
                 result_rows.append(f"{row['검사명칭']}: {row['검사결과']}")
@@ -80,9 +83,9 @@ if uploaded_file:
 
         # Concatenate results with line breaks
         st.session_state.output_form = "\n".join(result_rows)
+        
+        autotemplate = autoformat_chain.invoke({"input" : st.session_state.output_form})
         st.write(result_rows)
         st.session_state.processed_form =True
 
-        
-    st.text('결과')
-    st.text(st.session_state.output_form)
+    st.text(autotemplate)
