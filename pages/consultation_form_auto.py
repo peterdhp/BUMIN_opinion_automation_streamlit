@@ -75,10 +75,8 @@ if uploaded_file:
             if row['type'] in [0, 1] and is_abnormal(row):
                 result_rows.append(f"{row['검사명칭']}: {row['검사결과']}")
             elif row['type'] == 2:
-                if row['외부결과'] == '' :
-                    result_rows.append(f"{row['검사명칭']}: {row['서술결과']}")
-                else:
-                    result_rows.append(f"{row['검사명칭']}: {row['외부결과']}")
+                external_result = row['외부결과'] if not pd.isna(row['외부결과']) else row['서술결과']
+                result_rows.append(f"{row['검사명칭']}: {external_result}")
 
         # Concatenate results with line breaks
         st.session_state.output_form = "\n".join(result_rows)
