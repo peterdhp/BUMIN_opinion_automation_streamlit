@@ -70,17 +70,8 @@ if uploaded_file:
 
         # Concatenate results with line breaks
         summary_string = "\n".join(result_rows)
-
-        # Display the summary string
-        st.text(summary_string)
-        #patient_chart_number = 336379  # Replace with the chart number of the patient you want to test
-        #filtered_df = filtered_df[filtered_df['챠트번호'] == patient_chart_number]
-        
-
-        
-        
-        ''''''
-
         st.session_state.processed_form =True
 
         
+
+    st.text(summary_string)
