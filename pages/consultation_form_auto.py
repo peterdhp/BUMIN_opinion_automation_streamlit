@@ -69,9 +69,9 @@ if uploaded_file:
                     result_rows.append(f"{row['검사명칭']}: {row['외부결과']}")
 
         # Concatenate results with line breaks
-        summary_string = "\n".join(result_rows)
+        st.session_state.output_form = "\n".join(result_rows)
         st.session_state.processed_form =True
 
         
 
-    st.text(summary_string)
+    st.text(st.session_state.output_form)
