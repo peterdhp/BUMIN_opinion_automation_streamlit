@@ -71,7 +71,7 @@ generator_prompt = ChatPromptTemplate.from_messages(
         ("human", "medical test results: {report}"),
     ]
 )
-generator = generator_prompt | StrOutputParser()
+generator = generator_prompt |llm4o | StrOutputParser()
 class GradeHallucinations(BaseModel):
     """Binary score for hallucination present in generation answer."""
 
