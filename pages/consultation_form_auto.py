@@ -72,7 +72,7 @@ if uploaded_file:
         chartnum = df['챠트번호'].iloc[0]
         name = df['성명'].iloc[0]
         checkup_date = df['검진일'].iloc[0]
-        first_row = chartnum + ' ' + name + ' [' + checkup_date + 'HPDP]'
+        first_row = str(chartnum) + ' ' + name + ' [' + str(checkup_date) + 'HPDP]'
         result_rows.append(first_row)
         for _, row in df.iterrows():
             if row['type'] in [0, 1] and is_abnormal(row):
