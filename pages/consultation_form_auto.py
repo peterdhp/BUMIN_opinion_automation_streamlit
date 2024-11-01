@@ -31,12 +31,24 @@ if openai_api_key == 'bumin':
 uploaded_file = st.file_uploader("Upload your Excel file", type=['xlsx'])
 
 def is_abnormal(row):
-    try:
-        result = float(row['검사결과'])
-        lower, upper = map(float, row['선택참고'].replace('|', '~').split('~'))
-        return result < lower or result > upper
-    except:
-        return False
+    result = row['검사결과']
+    reference = row['선택참고']
+    
+    # Check for non-numeric references
+    if '음성' in reference or '양성' in reference:
+        # Handle cases with exact matches or alternatives like "음성|약양성"
+        ref_values = reference.split('|')
+        return result not in ref_values
+    else:
+        # For numeric ranges, proceed with the range check
+        try:
+            result = float(result)
+            lower, upper = map(float, reference.replace('|', '~').split('~'))
+            return result < lower or result > upper
+        except ValueError:
+            # If conversion fails, consider it non-numeric and skip
+            return False
+
 
 
 if uploaded_file:
