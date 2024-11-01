@@ -76,14 +76,14 @@ comment_prompt = ChatPromptTemplate.from_messages(
 commenter = comment_prompt | structured_llm_commenter
 
 class CommentType(BaseModel):
-    """Class of the comment which is one of the following. 'f/u period', 'check results','both' and 'other'"""
+    """Class of the comment which is one of the following. 'f/u period', 'missing biopsy results''both' and 'other'"""
 
     comment_class: str = Field(
-        description="Class of comment. 'f/u period', 'check results', 'both' or 'other'."
+        description="Class of comment. 'f/u period', 'missing biopsy results', 'both' or 'other'."
     )
 structured_llm_comment_classifier = llm4omini.with_structured_output(CommentType)
 
-commenttype_system_prompt = """When given a comment classify the comment into three categories. 'f/u period', 'missing biopsy results', or 'other'. \n\n 'f/u period' means that the comment is only related to the follow-up period.\n\n'check results' means that the comment is only related lab, biopsy results.\n\n'both' means that the comment is related to lab, biopsy results and follow-up period only. \n\n 'other' means that the comment is not related to the follow-up period or lab, biopsy results.\n\n"""
+commenttype_system_prompt = """When given a comment classify the comment into three categories. 'f/u period', 'missing biopsy results','both' or 'other'. \n\n 'f/u period' means that the comment is only related to the follow-up period.\n\n'check results' means that the comment is only related lab, biopsy results.\n\n'both' means that the comment is related to lab, biopsy results and follow-up period only. \n\n 'other' means that the comment is not related to the follow-up period or lab, biopsy results.\n\n"""
 comment_type_prompt = ChatPromptTemplate.from_messages(
     [
         ("system", commenttype_system_prompt),
