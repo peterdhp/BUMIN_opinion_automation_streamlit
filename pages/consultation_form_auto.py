@@ -27,7 +27,7 @@ openai_api_key = st.sidebar.text_input('OpenAI API Key', value='', type='passwor
 if openai_api_key == 'bumin':
     openai_api_key = st.secrets['OPENAI_API_KEY']
 
-uploaded_file = st.file_uploader("Upload your Excel file", type=['xlsx'])
+uploaded_files = st.file_uploader("Upload your Excel file", type=['xlsx'],accept_multiple_files=True)
 
 def is_abnormal(row):
     result = str(row['검사결과'])  # Convert 검사결과 to string for consistent comparison
@@ -50,42 +50,61 @@ def is_abnormal(row):
 
 
 
-if uploaded_file:
+if uploaded_files:
     
     if st.session_state.processed_form == False:
-        st.session_state.output_form = ""
-        # Load the uploaded Excel file into a DataFrame
-        df = pd.read_excel(uploaded_file)
-        df = df.replace({'_x000D_\n': '\n'}, regex=True)
-        df = df.replace({'\\?': ''}, regex=True)
+        overall_text =''
+        for uploaded_file in uploaded_files:
+            st.session_state.output_form = ""
+            # Load the uploaded Excel file into a DataFrame
+            df = pd.read_excel(uploaded_file)
+            df = df.replace({'_x000D_\n': '\n'}, regex=True)
+            df = df.replace({'\\?': ''}, regex=True)
 
-        # Function to check if result is abnormal
-        
-        result_rows = []
-        
-        # Filter out rows with '검사명칭' matching the given values
-        excluded_tests = ['흉부X선(1차)','유전자검사','선헬스케어 동의서', '어떠케어 동의서', '에임메드 동의서','비플러스케어(becare) 동의서','케어링크 동의서+신분증사본','DHAT','위조직검사','위조직검사1~3개']
-        
-        # Assuming '검사명칭' is one of the columns. We need to filter based on that.
-        df = df[~df['검사명칭'].isin(excluded_tests)]
-        # Filter for a specific patient using their '챠트번호'
-        chartnum = df['챠트번호'].iloc[0]
-        name = df['성명'].iloc[0]
-        checkup_date = df['검진일'].iloc[0]
-        first_row = str(chartnum) + ' ' + name + ' [' + str(checkup_date) + 'HPDP]'
-        result_rows.append(first_row)
-        for _, row in df.iterrows():
-            if row['type'] in [0, 1] and is_abnormal(row):
-                result_rows.append(f"{row['검사명칭']}: {row['검사결과']}")
-            elif row['type'] == 2:
-                external_result = row['외부결과'] if not pd.isna(row['외부결과']) else row['서술결과']
-                result_rows.append(f"{row['검사명칭']}: {external_result}")
+            # Function to check if result is abnormal
+            
+            result_rows = []
+            
+            # Filter out rows with '검사명칭' matching the given values
+            excluded_tests = ['흉부X선(1차)','유전자검사','선헬스케어 동의서', '어떠케어 동의서', '에임메드 동의서','비플러스케어(becare) 동의서','케어링크 동의서+신분증사본','DHAT','위조직검사','위조직검사1~3개']
+            
+            # Assuming '검사명칭' is one of the columns. We need to filter based on that.
+            df = df[~df['검사명칭'].isin(excluded_tests)]
+            # Filter for a specific patient using their '챠트번호'
+            chartnum = df['챠트번호'].iloc[0]
+            name = df['성명'].iloc[0]
+            checkup_date = df['검진일'].iloc[0]
+            first_row = str(chartnum) + ' ' + name + ' [' + str(checkup_date) + 'HPDP]'
+            result_rows.append(first_row)
+            for _, row in df.iterrows():
+                if row['type'] in [0, 1] and is_abnormal(row):
+                    result_rows.append(f"{row['검사명칭']}: {row['검사결과']}")
+                elif row['type'] == 2:
+                    external_result = row['외부결과'] if not pd.isna(row['외부결과']) else row['서술결과']
+                    result_rows.append(f"{row['검사명칭']}: {external_result}")
 
-        # Concatenate results with line breaks
-        st.session_state.output_form = "\n".join(result_rows)
+            # Concatenate results with line breaks
+            st.session_state.output_form = "\n".join(result_rows)
+            
+            autotemplate = autoformat_chain.invoke({"input" : st.session_state.output_form})
+            single_result = autotemplate['response']
+            
+            overall_text += single_result + '\n --------------------------------------\n\n\n\n'
+            #st.write(result_rows)
+            
+        st.text(overall_text)
         
-        autotemplate = autoformat_chain.invoke({"input" : st.session_state.output_form})
-        #st.write(result_rows)
         
-        st.text(autotemplate['response'])
         st.session_state.processed_form =True
+        
+    if st.session_state.processed ==True :
+        if st.session_state.output_text is not "":
+            st.text(st.session_state.output_text)
+            st.download_button(
+                label="Download Patient Results",
+                data=st.session_state.output_text,
+                file_name='상담 양식.txt',
+                mime='text/plain'
+            )
+        else :
+            st.write("No results found")
