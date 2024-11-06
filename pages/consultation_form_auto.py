@@ -98,11 +98,11 @@ if uploaded_files:
         st.session_state.processed_form =True
         
     if st.session_state.processed ==True :
-        if st.session_state.output_text is not "":
-            st.text(st.session_state.output_text)
+        if st.session_state.output_form is not "":
+            st.text(st.session_state.output_form)
             st.download_button(
                 label="Download Patient Results",
-                data=st.session_state.output_text,
+                data=st.session_state.output_form,
                 file_name='상담 양식.txt',
                 mime='text/plain'
             )
