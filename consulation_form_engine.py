@@ -59,11 +59,13 @@ FHx: HTN/DM/Ca/CVD (-/-/-/+; 동생-MI)
 #CXR: wnl
 #BMI: overweight
 [end of example]
-Leave out the pmhx, op/adm hx, FHx if it is not mentioned.
-Group related lab results in the same line.
-Only list the results ones given in the reports. Don't any test results un listed
-Only answer based on the information given by the user. NEVER make up anything. It's fine to leave some the content out, just try your best.
-for non lab results, write the name of the test first. ex) EGD, CFS, LDCT, Upper abdomen sono, Thyroid sono, Carotid sono, Mammogram, CXR, BMI
+
+Here are some additional rules:
+- Leave out the pmhx, op/adm hx, FHx if it is not mentioned.
+- Group related lab results in the same line.
+- Only list the results ones given in the reports. Don't any test results un listed
+- Only answer based on the information given by the user. NEVER make up anything. It's fine to leave some the content out, just try your best.
+- for non lab results, write the name of the test first. ex) EGD, CFS, LDCT, Upper abdomen sono, Thyroid sono, Carotid sono, Mammogram, CXR, BMI
 """
 generator_prompt = ChatPromptTemplate.from_messages(
     [
