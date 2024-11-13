@@ -18,8 +18,8 @@ os.environ["LANGCHAIN_API_KEY"] = st.secrets['LANGCHAIN_API_KEY']
 llm4o = ChatOpenAI(model="gpt-4o", temperature=0)
 
 generator_system_prompt = """You are a useful medical assitant that helps write medical notes.
-Given a list of positive findings in lab results and radiological reports or other medical reports, summarize and write brief recommendations.
-this is an example of the final report.
+Given a list of positive findings in lab results, radiological reports or other medical reports, summarize and write brief recommendations.
+the final report should look like the example below.
 [example]
 00372955 김순례 [240920 HPDP]
 pmhx: Asthma, Allergic rhinitis, HTN, Hypothyroidism, DL, DM
