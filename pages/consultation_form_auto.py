@@ -22,6 +22,8 @@ if "processed_form" not in st.session_state :
     st.session_state.processed_form = False
 if "output_form" not in st.session_state :
     st.session_state.output_form = ""
+if "overall_text" not in st.session_state :    
+    st.session_state.overall_text
 
 openai_api_key = st.sidebar.text_input('OpenAI API Key', value='', type='password')
 if openai_api_key == 'bumin':
@@ -53,7 +55,6 @@ def is_abnormal(row):
 if uploaded_files:
     
     if st.session_state.processed_form == False:
-        overall_text =''
         for uploaded_file in uploaded_files:
             st.session_state.output_form = ""
             # Load the uploaded Excel file into a DataFrame
@@ -89,10 +90,10 @@ if uploaded_files:
             autotemplate = autoformat_chain.invoke({"input" : st.session_state.output_form})
             single_result = autotemplate['response']
             
-            overall_text += single_result + '\n --------------------------------------\n\n\n\n'
+            st.session_state.overall_text += single_result + '\n --------------------------------------\n\n\n\n'
             #st.write(result_rows)
             
-        st.text(overall_text)
+        st.text(st.session_state.overall_text)
         
         
         st.session_state.processed_form =True
