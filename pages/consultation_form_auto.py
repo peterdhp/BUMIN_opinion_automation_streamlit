@@ -23,7 +23,7 @@ if "processed_form" not in st.session_state :
 if "output_form" not in st.session_state :
     st.session_state.output_form = ""
 if "overall_text" not in st.session_state :    
-    st.session_state.overall_text
+    st.session_state.overall_text =""
 
 openai_api_key = st.sidebar.text_input('OpenAI API Key', value='', type='password')
 if openai_api_key == 'bumin':
