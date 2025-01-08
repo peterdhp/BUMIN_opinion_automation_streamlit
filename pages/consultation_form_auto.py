@@ -78,9 +78,9 @@ if uploaded_files:
             first_row = str(chartnum) + ' ' + name + ' [' + str(checkup_date) + 'HPDP]'
             result_rows.append(first_row)
             for _, row in df.iterrows():
-                if row['type'] in [0, 1] and is_abnormal(row):
+                if row[' '] in [0, 1] and is_abnormal(row):
                     result_rows.append(f"{row['검사명칭']}: {row['검사결과']}")
-                elif row['type'] == 2:
+                elif row[' '] == 2:
                     external_result = row['외부결과'] if not pd.isna(row['외부결과']) else row['서술결과']
                     result_rows.append(f"{row['검사명칭']}: {external_result}")
 
