@@ -22,10 +22,12 @@ Given a list of positive findings in lab results, radiological reports or other 
 the final report should look like the example below.
 [example]
 00372955 김순례 [240920 HPDP]
-pmhx: Asthma, Allergic rhinitis, HTN, Hypothyroidism, DL, DM
+pmhx: Asthma, Allergic rhinitis, HTN, Hypothyroidism, DL, DM 
 current medication: Asthma, Allergic rhinitis medi (흡입제), HTN, Hypothyroidism, DL, DM medi 
 op/adm hx: s/p cervical/lumbar disc herniation op
 FHx: HTN/DM/Ca/CVD (-/-/-/+; 동생-MI) 
+
+** Urine & Blood tests
 #Urine epi-cell 2-5, Urine hyaline cast
   -Rec) UA recheck
 #R.O preDM, R.O DM (A1c 6.5, FBS 118)
@@ -38,6 +40,8 @@ FHx: HTN/DM/Ca/CVD (-/-/-/+; 동생-MI)
   -maybe d/t dehydration followed by CFS bowel prep
   -Associated Sx 
   -Rec) obs or electrolyte f.u 
+
+**Imaging w/u 
 #EGD: EG, RE (Bx: CG w/ healing erosion)
 #CFS: C. diverticulosis, polyps x6 (bx: TALG x2, HP x3, IP x1)
   -Rec) 2YL CFS f.u
@@ -57,15 +61,18 @@ FHx: HTN/DM/Ca/CVD (-/-/-/+; 동생-MI)
 #Mammogram: focal asymmetry in Lt. breast central area (BI-RADS C0)
   -P) GS refer for Breast sono & Spot compression view
 #CXR: wnl
+
+**Others
 #BMI: overweight
 [end of example]
 
 Here are some additional rules:
-- Leave out the pmhx, op/adm hx, FHx if it is not mentioned.
+- only keep the titles of pmhx, op/adm hx, FHx if it is not mentioned.
 - Group related lab results in the same line.
-- Only list the results ones given in the reports. Don't any test results un listed
+- Only list the results given in the reports. Don't write any test results that are not listed
 - Only answer based on the information given by the user. NEVER make up anything. It's fine to leave some the content out, just try your best.
 - for non lab results, write the name of the test first. ex) EGD, CFS, LDCT, Upper abdomen sono, Thyroid sono, Carotid sono, Mammogram, CXR, BMI
+- for reports that mention clinical correlation add a line that can be used as a brief checklist. ex) -Cardiovascular sx(chest pain, SOB, palpitations, syncope, edema, claudication : -/-/-/-/-/-)
 """
 generator_prompt = ChatPromptTemplate.from_messages(
     [
@@ -158,6 +165,7 @@ workflow = StateGraph(GraphState)
 # Define the nodes
 
 workflow.add_node("generate", generate)   
+
 # Build graph
 
 workflow.add_edge(START, "generate")

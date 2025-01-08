@@ -48,7 +48,6 @@ def menu():
 def menu_with_redirect():
     # Redirect users to the main page if not logged in, otherwise continue to
     # render the navigation menu
-    
     if "openai_api_key" not in st.session_state or st.session_state.openai_api_key == '':
         st.switch_page("app_streamlit.py")
     menu()

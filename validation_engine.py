@@ -97,7 +97,7 @@ class FixedExplanation(BaseModel):
     """A fixed explanation of the test report."""
 
     new_explanation: str = Field(
-        description="Fixed explantation of the test report."
+        description="Fixed explanation of the test report."
     )
 structured_llm_explanation_fixer = llm4o.with_structured_output(FixedExplanation)
 
