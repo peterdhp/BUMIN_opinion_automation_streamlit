@@ -72,7 +72,7 @@ Here are some additional rules:
 - Only list the results given in the reports. Don't write any test results that are not listed
 - Only answer based on the information given by the user. NEVER make up anything. It's fine to leave some the content out, just try your best.
 - for non lab results, write the name of the test first. ex) EGD, CFS, LDCT, Upper abdomen sono, Thyroid sono, Carotid sono, Mammogram, CXR, BMI
-- for reports that mention any clinical correlation please give a list of symptoms that should be checked. ex) -Cardiovascular sx(chest pain, SOB, palpitations, syncope, edema, claudication : -/-/-/-/-/-)
+- for lab results or test results that mention clinical correlation please give a list of symptoms that should be checked. Here is an example of the line to be added. -Cardiovascular sx(chest pain, SOB, palpitations, syncope, edema, claudication : -/-/-/-/-/-)
 """
 generator_prompt = ChatPromptTemplate.from_messages(
     [
