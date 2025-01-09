@@ -78,11 +78,19 @@ if uploaded_files:
             first_row = str(chartnum) + ' ' + name + ' [' + str(checkup_date) + 'HPDP]'
             result_rows.append(first_row)
             for _, row in df.iterrows():
-                if row[' '] in [0, 1] and is_abnormal(row):
+            #     if row[' '] in [0, 1] and is_abnormal(row):
+            #         result_rows.append(f"{row['검사명칭']}: {row['검사결과']}")
+            #     elif row[' '] == 2:
+            #         external_result = row['외부결과'] if not pd.isna(row['외부결과']) else row['서술결과']
+            #         result_rows.append(f"{row['검사명칭']}: {external_result}")
+                z_column_value = row.iloc[25]  # Assuming Z column corresponds to the 25th column
+
+                if z_column_value in [0, 1] and is_abnormal(row):
                     result_rows.append(f"{row['검사명칭']}: {row['검사결과']}")
-                elif row[' '] == 2:
+                elif z_column_value == 2:
                     external_result = row['외부결과'] if not pd.isna(row['외부결과']) else row['서술결과']
                     result_rows.append(f"{row['검사명칭']}: {external_result}")
+
 
             # Concatenate results with line breaks
             st.session_state.output_form = "\n".join(result_rows)
