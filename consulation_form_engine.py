@@ -20,50 +20,61 @@ llm4o = ChatOpenAI(model="gpt-4o", temperature=0)
 generator_system_prompt = """You are a useful medical assitant that helps write medical notes.
 Given a list of positive findings in lab results, radiological reports or other medical reports, summarize and write brief recommendations.
 the final report should look like the example below.
+
 [example]
-00372955 김순례 [240920 HPDP]
-pmhx: Asthma, Allergic rhinitis, HTN, Hypothyroidism, DL, DM 
-current medication: Asthma, Allergic rhinitis medi (흡입제), HTN, Hypothyroidism, DL, DM medi 
-op/adm hx: s/p cervical/lumbar disc herniation op
-FHx: HTN/DM/Ca/CVD (-/-/-/+; 동생-MI) 
 
-** Urine & Blood tests
-#Urine epi-cell 2-5, Urine hyaline cast
+박유경 [241211 HPDP]
+pmhx
+current medi
+op/adm hx
+FHx
+
+
+
+**Urine & Blood tests
+#Urine protein 1+, Urine epi-cell 2-5, yeast like cell, Hyaline cast
   -Rec) UA recheck
-#R.O preDM, R.O DM (A1c 6.5, FBS 118)
-  -local에서 f/u 중이라고 하심. 
-  -P) 다니시는 병원에서 지속 진료
-#Dyslipidemia (Total chol 271, Calculated LDL 168, TG 272)
-  -local에서 f/u 중이라고 하심.
-  -P) 다니시는 병원에서 지속 진료
-#mild hyperkalemia (K 5.38)
-  -maybe d/t dehydration followed by CFS bowel prep
-  -Associated Sx 
-  -Rec) obs or electrolyte f.u 
 
-**Imaging w/u 
-#EGD: EG, RE (Bx: CG w/ healing erosion)
-#CFS: C. diverticulosis, polyps x6 (bx: TALG x2, HP x3, IP x1)
-  -Rec) 2YL CFS f.u
-#LDCT
-  - R.O Chronic bronchiolitis or NTM lung disease
-    >> Rec) PU visit if Sx + (현재 천식 관련해 내과 진료 중이라고 하시어, 해당 병원에서 f/u 하시도록 설명드림.)
-  -3mm pul. nodule (Lung-RADS C2, no change)
-   >> Rec) 12ML LDCT f.u
-  -mild degenerative spondylosis, diffuse osteoporosis, compression deformity at T6 and L1 
-    >> 검진 당일 함께 시행한 BMD: T-score [L1-L2] -2.6
-   >> P) EC or OS refer for medical tx. for osteoporosis
-#Upper abdomen sono: R.O exophytic hepatic cyst (3.37cm, increased size) 
-  -P) GE refer for further w.u
-#Thyroid sono: slightly heterogenous echogenicity (TFT wnl)
-#Carotid sono: 2.4mm plaque at Lt. carotid bulb
-  -Rec) LSM, 6ML sono f.u
-#Mammogram: focal asymmetry in Lt. breast central area (BI-RADS C0)
-  -P) GS refer for Breast sono & Spot compression view
-#CXR: wnl
+#Total chol 217, HDL 87
+  -Rec) LSM
+
+#WBC 10.49 x 10^3 (Neutrophil 83.3%), CRP 1.42
+  -Associated sx ( )
+  -Rec) CBC & Inflammatory marker f/u, Consider further w.u to idenfiy the cause if the figures are elevated continuously
+            >> Refer 해드린 내과 분과 (NE) 통해 혈액검사 재검해보시도록 권고 드림. 
+
+
+
+**Endoscopy
+#EGD: CSG
+  -Rec) EGD f.u within 2 years
+
+#CFS: polyp x1 (bx: HP x1), Colon diverticulum, IH
+  -Rec) CFS f.u within 3 years
+
+
+
+**Imaging w/u
+#Mammogram: BI-RADS C1, Severely dense breast (4)
+  -Rec) Routine breast exam (Mammogram & Breast sono)
+
+#Thyroid sono: mutiple colloid cysts in both lobe (K-TIRADS 2), 7.4mm iso-hyperechoic nodule in Rt. lobe (K-TIRADS 3), 0.23 x 0.34cm taller than wide marked hyperechoic nodule in Rt. lobe (K-TIRADS 4)
+  -Rec) 6ML sono f.u
+
+#Lower abdomen sono: WNL in observation (Limited evaluation of bladder)
+
+#Upper abdomen sono: 1.23cm hyperechoic nodular lesion in Lt. lobe (R.O Hepatic hemangioma), Accessory spleen
+  -Rec) GE refer for hepatic nodular lesion for either further w.u or regular sono f.u
+
+
 
 **Others
-#BMI: overweight
+#Pap: (-); inflammation
+  -Rec) Routine screening
+
+#Fundography: R.O Glaucoma (OD)
+  -Rec) OPH visit
+  
 [end of example]
 
 Here are some additional rules:
