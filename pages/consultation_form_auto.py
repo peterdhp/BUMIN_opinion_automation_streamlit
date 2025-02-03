@@ -93,7 +93,7 @@ if uploaded_files:
 
 
             # Concatenate results with line breaks
-            st.session_state.output_form = "\n".join(result_rows)
+            st.session_state.output_form = "\n\n".join(result_rows)
             
             autotemplate = autoformat_chain.invoke({"input" : st.session_state.output_form})
             single_result = autotemplate['response']

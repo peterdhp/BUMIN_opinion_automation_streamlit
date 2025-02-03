@@ -28,6 +28,8 @@ st.session_state.openai_api_key = st.text_input('OpenAI API Key' ,type='password
     
 if st.session_state.openai_api_key == 'bumin':
     st.session_state.openai_api_key = st.secrets['OPENAI_API_KEY']
+elif st.session_state.openai_api_key == 'peter':
+    st.session_state.openai_api_key = st.secrets['OPENAI_API_KEY_personal']
     
     os.environ['OPENAI_API_KEY']=st.secrets['OPENAI_API_KEY']
 if not st.session_state.openai_api_key.startswith('sk-'):
