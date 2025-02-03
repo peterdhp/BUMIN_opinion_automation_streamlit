@@ -28,6 +28,8 @@ if "overall_text" not in st.session_state :
 openai_api_key = st.sidebar.text_input('OpenAI API Key', value='', type='password')
 if openai_api_key == 'bumin':
     openai_api_key = st.secrets['OPENAI_API_KEY']
+if openai_api_key == 'peter':
+    openai_api_key = st.secrets['OPENAI_API_KEY_personal']
 
 uploaded_files = st.file_uploader("Upload your Excel file", type=['xlsx'],accept_multiple_files=True)
 
