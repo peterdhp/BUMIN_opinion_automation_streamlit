@@ -32,8 +32,8 @@ from langsmith import Client
 
 menu_with_redirect()
 
-client1 = Client()
-client2 = Client()
+#client1 = Client()
+#client2 = Client()
 
 
 def opinion_generator_new(model):
@@ -126,12 +126,12 @@ with col1 :
                 feedback_type_str = f"{feedback_option} {feedback_1['score']}"
 
                 # Record the feedback with the formulated feedback type string and optional comment
-                feedback_record = client1.create_feedback(
-                    run_id_1,
-                    feedback_type_str,
-                    score=score,
-                    comment=feedback_1.get("text"),
-                )
+                # feedback_record = client1.create_feedback(
+                #     run_id_1,
+                #     feedback_type_str,
+                #     score=score,
+                #     comment=feedback_1.get("text"),
+                # )
                 st.session_state.feedback = {
                     "feedback_id": str(feedback_record.id),
                     "score": score,
@@ -186,12 +186,12 @@ with col2 :
                 feedback_type_str = f"{feedback_option} {feedback_2['score']}"
 
                 # Record the feedback with the formulated feedback type string and optional comment
-                feedback_record = client2.create_feedback(
-                    run_id_2,
-                    feedback_type_str,
-                    score=score,
-                    comment=feedback_2.get("text"),
-                )
+                # feedback_record = client2.create_feedback(
+                #     run_id_2,
+                #     feedback_type_str,
+                #     score=score,
+                #     comment=feedback_2.get("text"),
+                # )
                 st.session_state.feedback = {
                     "feedback_id": str(feedback_record.id),
                     "score": score,
