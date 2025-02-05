@@ -132,10 +132,10 @@ with col1 :
                 #     score=score,
                 #     comment=feedback_1.get("text"),
                 # )
-                st.session_state.feedback = {
-                    "feedback_id": str(feedback_record.id),
-                    "score": score,
-                }
+                # st.session_state.feedback = {
+                #     "feedback_id": str(feedback_record.id),
+                #     "score": score,
+                # }
             else:
                 st.warning("Invalid feedback score.")
             
@@ -192,10 +192,10 @@ with col2 :
                 #     score=score,
                 #     comment=feedback_2.get("text"),
                 # )
-                st.session_state.feedback = {
-                    "feedback_id": str(feedback_record.id),
-                    "score": score,
-                }
+                # st.session_state.feedback = {
+                #     "feedback_id": str(feedback_record.id),
+                #     "score": score,
+                # }
             else:
                 st.warning("Invalid feedback score.")
             
